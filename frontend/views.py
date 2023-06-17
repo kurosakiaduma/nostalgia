@@ -3,5 +3,5 @@ from django.http import request
 from django.contrib.auth.models import AnonymousUser
 
 def index(request):
-    if request.USER == AnonymousUser:
-        return render("index.html")
+    print(f"{(request.user)}")
+    return render(request,"index.html")
