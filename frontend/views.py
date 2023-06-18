@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.http import request
-from django.contrib.auth.models import AnonymousUser
+from django.middleware.csrf import get_token
 
 def index(request):
-    print(f"{(request.user)}")
-    return render(request,"index.html")
+    csrftoken = get_token(request)
+    return render(request,"index.html", {"token": csrftoken})
