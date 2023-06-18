@@ -34,9 +34,10 @@ class Member(models.Model):
     birth_date = models.DateField(null=False)
     gender = models.CharField(choices=GENDER_CHOICES, default="Prefer Not To Say", max_length=20)
     password = models.CharField(max_length=30, validators=[MinLengthValidator(limit_value=8, message="Please ensure the password is at least 8 characters"), RegexValidator(regex='^password', inverse_match=True, message="Please use a different password")], default="password")
-    family = models.ForeignKey(Family, on_delete=models.CASCADE)
+    family = models.ForeignKey('Family', on_delete=models.CASCADE)
     is_founder = models.BooleanField()
-    child_of = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children')
+    mother = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_mother')
+    father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_father')
     spouse_of = models.ManyToManyField('self', blank=True)
 
     USERNAME_FIELD = 'email'
@@ -66,6 +67,6 @@ class Family(models.Model):
         return f'The {self.name} family that was founded by {self.founder}'
     
 class MemberImage(models.Model):
-    member = models.ForeignKey(Member, related_name="images")
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField()
-    
+    uploaded_at = models.DateTimeField(auto_now_add=True)    
