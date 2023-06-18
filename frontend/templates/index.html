@@ -1,0 +1,24 @@
+{% load reactpy static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Nostalgia</title>
+    <!--Specifies the character encoding for the HTML Document-->
+    <meta charset="utf-8">
+    <!-- Sets the viewport width to the device width and sets the initial zoom level to 1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Microsoft Tile Color -->
+    <meta name="msapplication-TileColor" content="#da532c">
+    <!-- Theme Color for mobile browsers -->
+    <meta name="theme-color" content="#ffffff">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  </head>
+  <body>
+    {% component 'frontend.src.components.register.registerFamily' %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5"></script>
+  </body>
+</html>
