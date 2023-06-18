@@ -3,6 +3,7 @@ from reactpy import *
 from backend.models import *
 from django.db.utils import IntegrityError
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 
 @component
 def DateInput():
@@ -22,7 +23,7 @@ def DateInput():
 
 
 @component
-def registerFamily():
+def registerFamily(csrftoken: str):
     [familyName, setFamilyName] = use_state('')
     [firstName, setFirstName] = use_state('')
     [lastName, setLastName] = use_state('')
@@ -36,7 +37,9 @@ def registerFamily():
     
     @sync_to_async
     def create_housekeeper(firstName, lastName, email, gender, dob, password, family):
-        return Member.objects.add_member(
+        #Hash password before saving user to db
+        password = make_password(password)
+        return Member.objects.create(
             email=email,
             fname=firstName,
             lname=lastName,
@@ -65,10 +68,12 @@ def registerFamily():
             
             # Create a new member for the family
             member = await create_housekeeper(firstName, lastName, username, gender, dob, password, family)
-        except IntegrityError as e:
+            print(f'family=> {family}\n member=> {member}')
+                
+        except IntegrityError:
             messages.warning("Already present user")
         
-        print(f'family=> {family}\n member=> {member}')
+        
         
     return html.div(
         {"class": "container"},
@@ -79,8 +84,14 @@ def registerFamily():
                 html.h5({"class": "card-title text-center"}, "Sign your family up 👨🏾‍👩🏾‍👧🏾‍👦🏾"),
                 html.form(
                     {"on_submit": handleSubmit,
+                     "method": "POST",
                     
                     },
+                    html.input({
+                        "type": "hidden",
+                        "name": "csrfmiddlewaretoken",
+                        "value": csrftoken
+                        }),
                     html.div(
                         {"class": "mb-3"},
                         html.label({"class": "form-label",
