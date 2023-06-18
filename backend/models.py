@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator
-from uuid import uuid4, uuid5
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.translation import gettext_lazy as _
+from uuid import uuid1, uuid4
+import PIL.Image, imageio
 
 GENDER_CHOICES = (
     ("Male","Male"),
@@ -13,51 +16,55 @@ GENDER_CHOICES = (
 Family and member models
 """    
 class FamilyManager(models.Manager):
-    def create_family(self, name, founder):
+    """ Manager for all family profiles """
+    use_in_migrations = True
+
+    @classmethod
+    def create_family(self, name, founder, **extra_fields):
         family = self.create(name=name, founder=founder)
         return family
 
-class MemberManager(models.Manager):
-    def add_member(self, family, fname, lname, birth_date, gender, email=None):
+    
+
+class MemberManager(BaseUserManager):
+    
+    @classmethod
+    def add_member(self, family, fname, lname, birth_date, gender, email, password, **extra_fields):
+        email = self.normalize_email(email)
         member = self.create(family=family, fname=fname, lname=lname,
                              birth_date=birth_date, gender=gender,
-                             email=email)
+                             email=email, password=password)
+        
+        member.set_password(password)
+        member.save(using=self._db)
+        
         return member
 
-    def remove_member(self, member):
-        member.delete()
 
 
-class Member(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid5)
+class Member(AbstractBaseUser):
+    uuid = models.UUIDField(primary_key=True, default=uuid1)
     email = models.EmailField(max_length=255, unique=True, validators=[EmailValidator(message="Please enter a valid email address in the format"), RegexValidator(regex='^name@name.name', inverse_match=True, message="Please provide a valid email address.")])
     fname = models.CharField(max_length=50, null=False)
     other_names = models.CharField(max_length=50, blank=True) 
     lname = models.CharField(max_length=50, null=False)
-    birth_date = models.DateField(null=False)
+    birth_date = models.DateField(null=True)
     gender = models.CharField(choices=GENDER_CHOICES, default="Prefer Not To Say", max_length=20)
     password = models.CharField(max_length=30, validators=[MinLengthValidator(limit_value=8, message="Please ensure the password is at least 8 characters"), RegexValidator(regex='^password', inverse_match=True, message="Please use a different password")], default="password")
     family = models.ForeignKey('Family', on_delete=models.CASCADE)
     mother = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_mother')
     father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_father')
     spouse_of = models.ManyToManyField('self', blank=True)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['password']
-
-    def __str__(self):
-        return f'{self.fname} {self.lname} of {self.family}'
-
+    is_housekeeper = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
     
     objects = MemberManager()
 
-
     def __str__(self):
-        return f'{self.fname} {self.lname}'
-
+        return f'{self.fname} {self.lname} of {self.family}'
+        
 class Family(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(null=False, blank=False, max_length=50)
