@@ -9,6 +9,9 @@ GENDER_CHOICES = (
     ("Prefer Not To Say","Prefer Not To Say")
 )
 
+"""
+Family and member models
+"""    
 class FamilyManager(models.Manager):
     def create_family(self, name, founder):
         family = self.create(name=name, founder=founder)
@@ -35,7 +38,6 @@ class Member(models.Model):
     gender = models.CharField(choices=GENDER_CHOICES, default="Prefer Not To Say", max_length=20)
     password = models.CharField(max_length=30, validators=[MinLengthValidator(limit_value=8, message="Please ensure the password is at least 8 characters"), RegexValidator(regex='^password', inverse_match=True, message="Please use a different password")], default="password")
     family = models.ForeignKey('Family', on_delete=models.CASCADE)
-    is_founder = models.BooleanField()
     mother = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_mother')
     father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_father')
     spouse_of = models.ManyToManyField('self', blank=True)
@@ -65,8 +67,45 @@ class Family(models.Model):
     
     def __str__(self):
         return f'The {self.name} family that was founded by {self.founder}'
-    
+
+"""
+Image uploads
+"""    
+def get_upload_path(instance, filename):
+    return f'member_images/{instance.member.family.uuid}/{filename}'
+
+class MemberImageManager(models.Manager):
+    def add_image(self, member, image):
+        member_image = self.create(member=member, image=image)
+        return member_image
+
+    def remove_image(self, member_image):
+        member_image.delete()
+
 class MemberImage(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField()
-    uploaded_at = models.DateTimeField(auto_now_add=True)    
+    image = models.ImageField(upload_to=get_upload_path)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    objects = MemberImageManager()
+       
+"""
+Family stories
+"""    
+class StoryManager(models.Manager):
+    def add_story(self, title, content, family, author):
+        story = self.create(title=title, content=content,
+                            family=family, author=author)
+        return story
+
+    def remove_story(self, story):
+        story.delete()
+
+class Story(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    family = models.ForeignKey(Family, on_delete=models.CASCADE)
+    author = models.ForeignKey(Member, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = StoryManager()
