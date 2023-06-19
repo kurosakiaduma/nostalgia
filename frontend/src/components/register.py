@@ -1,9 +1,7 @@
+import aiohttp
 from asgiref.sync import sync_to_async
+from backend.models import Family, Member, GENDER_CHOICES
 from reactpy import *
-from backend.models import *
-from django.db.utils import IntegrityError
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
 
 @component
 def DateInput():
@@ -28,18 +26,33 @@ def registerFamily(csrftoken: str):
     [firstName, setFirstName] = use_state('')
     [lastName, setLastName] = use_state('')
     [email, setEmail] = use_state('')
+    [emailError, setEmailError] = use_state('')
     [gender, setGender] = use_state("Prefer Not To Say")
     [password, setPassword] = use_state('')
 
+    async def handleEmailChange(event):
+        email = event['target']['value']
+        setEmail(email) # Update the email state
+        print("I TRIED TO ACTIVATE THIS FUNCTION")
+        
+        # Make an API call to backend to check if the email already exists in the database
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'http://localhost:8000/api/check-email?email={email}') as response:
+                data = await response.json()
+                if data['email_exists']:
+                    # Display an error message to the user
+                    setEmailError('A member with this email already exists')
+                else:
+                    setEmailError('')
+    
     @sync_to_async
     def create_family(familyName):
         return Family.objects.create(name=familyName)
     
     @sync_to_async
     def create_housekeeper(firstName, lastName, email, gender, dob, password, family):
-        #Hash password before saving user to db
-        password = make_password(password)
-        return Member.objects.create(
+       
+        member = Member.objects.create(
             email=email,
             fname=firstName,
             lname=lastName,
@@ -48,33 +61,49 @@ def registerFamily(csrftoken: str):
             password=password,
             family=family,
             is_housekeeper=True,
-        )
-        
+        )         
+        #Hash password before saving user to db
+        member.set_password(password)
+        member.save()
+        return member
+    
+    @event(stop_propagation=True, prevent_default=True)            
     async def handleSubmit(event):
+        
+        # Prevent the form from being submitted if there's an error with email integrity check
+        if emailError:
+            return
+        
         # Get the form data
         formData = event.get("target").get("elements")
         
-        familyName = formData[0]['value']
-        firstName = formData[1]['value']
-        lastName = formData[2]['value']
-        username = formData[3]['value']
-        gender = formData[4]['value']
-        dob = formData[5]['value']
-        password = formData[6]['value']
+        familyName = formData[1]['value']
+        firstName = formData[2]['value']
+        lastName = formData[3]['value']
+        username = formData[4]['value']
+        gender = formData[5]['value']
+        dob = formData[6]['value']
+        password = formData[7]['value']
         
-        try:
-            # Create a new family
-            family = await create_family(familyName)
-            
-            # Create a new member for the family
-            member = await create_housekeeper(firstName, lastName, username, gender, dob, password, family)
-            print(f'family=> {family}\n member=> {member}')
+        # Create a new family
+        family = await create_family(familyName)
+                        
+        # Create a new member for the family
+        await create_housekeeper(firstName, lastName, username, gender, dob, password, family)
+
+        # Make an API call to backend to log in the user
+        async with aiohttp.ClientSession() as session:
+            async with session.post('http://localhost:8000/api/login', data={'username': username, 'password': password}, headers={'X-CSRFToken': csrftoken}) as response:
                 
-        except IntegrityError:
-            messages.warning("Already present user")
-        
-        
-        
+                data = await response.json()
+                print("IN ASYNC LOGIN", data)
+                if data['success']:
+                    # Login was successful
+                    print('Logged in')
+                else:
+                    # Login failed
+                    print('Invalid username or password')        
+    
     return html.div(
         {"class": "container"},
         html.div(
@@ -83,9 +112,8 @@ def registerFamily(csrftoken: str):
                 {"class": "card-body"},
                 html.h3({"class": "card-title text-center"}, "Sign your family up 👨🏾‍👩🏾‍👧🏾‍👦🏾"),
                 html.form(
-                    {"on_submit": handleSubmit,
-                     "method": "POST",
-                    
+                    {"onSubmit": handleSubmit,
+                     "method": "POST",    
                     },
                     html.input({
                         "type": "hidden",
@@ -139,11 +167,12 @@ def registerFamily(csrftoken: str):
                         html.input({
                             "type": "email",
                             "name":"email",
-                            "class": "form-control",
+                            "class": f"form-control {'is-invalid' if emailError else ''}",
                             "required": "True",
                             "value": email,
-                            "onChange": lambda event: setEmail(event['target']['value'])
-                        })
+                            "onChange": handleEmailChange
+                            }),
+                        html.div({"class": "invalid-feedback"}, emailError)
                     ),
                     html.div(
                         html.label({"for": "gender-select",
@@ -174,7 +203,14 @@ def registerFamily(csrftoken: str):
                             "onChange": lambda event: setPassword(event['target']['value'])
                         })
                     ),
-                    html.button({"type":"submit",  'className': 'btn btn-primary'}, 'Submit')
+                    html.button(
+                        {
+                            "type": "submit",
+                            "class": "btn btn-primary",
+                            "disabled": bool(emailError)
+                        },
+                        "Submit"
+                    ),
                 )
             )
         )
