@@ -81,7 +81,7 @@ def registerFamily(csrftoken: str):
             {"class": "card mt-5"},
             html.div(
                 {"class": "card-body"},
-                html.h5({"class": "card-title text-center"}, "Sign your family up 👨🏾‍👩🏾‍👧🏾‍👦🏾"),
+                html.h3({"class": "card-title text-center"}, "Sign your family up 👨🏾‍👩🏾‍👧🏾‍👦🏾"),
                 html.form(
                     {"on_submit": handleSubmit,
                      "method": "POST",
@@ -101,6 +101,7 @@ def registerFamily(csrftoken: str):
                             "type": "text",
                             "name":"familyName",
                             "class": "form-control",
+                            "required": "True",
                             "value": familyName,
                             "onChange": lambda event: setFamilyName(event['target']['value'])
                         })
@@ -114,6 +115,7 @@ def registerFamily(csrftoken: str):
                             "type": "text",
                             "name":"firstName",
                             "class": "form-control",
+                            "required": "True",
                             "value": firstName,
                             "onChange": lambda event: setFirstName(event['target']['value'])
                         })
@@ -126,6 +128,7 @@ def registerFamily(csrftoken: str):
                             "type": "text",
                             "name":"lastName",
                             "class": "form-control",
+                            "required": "True",
                             "value": lastName,
                             "onChange": lambda event: setLastName(event['target']['value'])
                         })
@@ -137,6 +140,7 @@ def registerFamily(csrftoken: str):
                             "type": "email",
                             "name":"email",
                             "class": "form-control",
+                            "required": "True",
                             "value": email,
                             "onChange": lambda event: setEmail(event['target']['value'])
                         })
@@ -165,6 +169,7 @@ def registerFamily(csrftoken: str):
                             "type": "password",
                             "name":"password",
                             "class": "form-control",
+                            "required": "True",
                             "value": password,
                             "onChange": lambda event: setPassword(event['target']['value'])
                         })
