@@ -1,4 +1,7 @@
 from .models import Member
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EmailAuthBackend():
     def authenticate(self, request, username, password):
@@ -6,8 +9,12 @@ class EmailAuthBackend():
             user = Member.objects.get(email=username)
             success = user.check_password(password)
             if success:
+                logger.debug(f"User {username} authenticated successfully")
                 return user
+            else:
+                logger.debug(f"User {username} failed authentication")
         except Member.DoesNotExist:
+            logger.debug(f"User {username} does not exist")
             pass
         return None
 
@@ -15,4 +22,5 @@ class EmailAuthBackend():
         try:
             return Member.objects.get(uuid=uuid)
         except:
+            logger.debug(f"User with uuid {uuid} not found")
             return None
