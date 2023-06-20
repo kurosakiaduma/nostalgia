@@ -1,0 +1,39 @@
+@import url('https://fonts.cdnfonts.com/css/beautiful-people-personal-use');
+@import url('https://fonts.cdnfonts.com/css/minion-pro');
+
+.toast {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 30%;
+    left: 50%;
+    background-color: antiquewhite;
+    transform: translate(-50%, -50%);
+}
+
+.toast button{
+    margin-top: .6em;
+    height: .5%;
+    width: 3%;
+    position: absolute;
+}
+
+body {
+    font-family: 'Minion Pro', sans-serif;
+    padding-top: 80px; /* Add appropriate padding */
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.navbar-brand{
+    font-family: 'Beautiful People Personal Use', sans-serif;
+}
+
+#clock {
+    margin-left: 20px;
+}
