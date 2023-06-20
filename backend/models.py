@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractBaseUser
 from uuid import uuid1, uuid4
 import PIL.Image, imageio
 
@@ -11,39 +10,12 @@ GENDER_CHOICES = (
     ("Non-Binary", "Non-Binary"),
     ("Prefer Not To Say","Prefer Not To Say")
 )
-
 """
 Family and member models
 """    
-class FamilyManager(models.Manager):
-    """ Manager for all family profiles """
-    use_in_migrations = True
-
-    @classmethod
-    def create_family(self, name, founder, **extra_fields):
-        family = self.create(name=name, founder=founder)
-        return family
-
-    
-
-class MemberManager(BaseUserManager):
-    
-    @classmethod
-    def add_member(self, family, fname, lname, birth_date, gender, email, password, **extra_fields):
-        email = self.normalize_email(email)
-        member = self.create(family=family, fname=fname, lname=lname,
-                             birth_date=birth_date, gender=gender,
-                             email=email, password=password)
-        
-        member.set_password(password)
-        member.save(using=self._db)
-        
-        return member
-
-
-
 class Member(AbstractBaseUser):
-    uuid = models.UUIDField(primary_key=True, default=uuid1)
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(default=uuid1)
     email = models.EmailField(max_length=255, unique=True, validators=[EmailValidator(message="Please enter a valid email address in the format"), RegexValidator(regex='^name@name.name', inverse_match=True, message="Please provide a valid email address.")])
     fname = models.CharField(max_length=50, null=False)
     other_names = models.CharField(max_length=50, blank=True) 
@@ -60,8 +32,6 @@ class Member(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
     
-    objects = MemberManager()
-
     def __str__(self):
         return f'{self.fname} {self.lname} of {self.family}'
         
@@ -69,8 +39,6 @@ class Family(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(null=False, blank=False, max_length=50)
     founder = models.OneToOneField(Member, on_delete=models.SET_NULL, null=True, related_name='founded_family')
-    
-    objects = FamilyManager()
     
     def __str__(self):
         return f'The {self.name} family that was founded by {self.founder}'
