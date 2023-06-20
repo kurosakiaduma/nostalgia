@@ -5,6 +5,7 @@ class EmailAuthBackend():
         try:
             user = Member.objects.get(email=username)
             success = user.check_password(password)
+            print(f'FROM AUTH BACKEND USER=>{user} SUCCESS=>{success} UNAME=>{username} PWD=>{password}')
             if success:
                 return user
         except Member.DoesNotExist:
@@ -13,6 +14,6 @@ class EmailAuthBackend():
 
     def get_user(self, uuid):
         try:
-            return Member.objects.get(pk=uuid)
+            return Member.objects.get(uuid=uuid)
         except:
             return None

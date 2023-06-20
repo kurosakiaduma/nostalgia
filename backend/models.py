@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator
 from django.contrib.auth.models import AbstractBaseUser
 from uuid import uuid1, uuid4
+from datetime import datetime as dt
 import PIL.Image, imageio
 
 GENDER_CHOICES = (
@@ -28,6 +29,7 @@ class Member(AbstractBaseUser):
     father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='children_father')
     spouse_of = models.ManyToManyField('self', blank=True)
     is_housekeeper = models.BooleanField(default=False)
+    last_logged = models.DateTimeField(default=dt.now)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
