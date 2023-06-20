@@ -31,8 +31,14 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "frontend.apps.FrontendConfig",
+    "backend.apps.BackendConfig",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
     "reactpy_django",
     "uvicorn",
+    "channels",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -41,8 +47,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "graphene_django",
     "whitenoise.runserver_nostatic",
-    "frontend",
-    "backend",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
