@@ -6,8 +6,13 @@ from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from datetime import datetime as dt
+
 
 def index(request):
+    print(f'THE USER IS {request.user}')
     return render(request,"index.html")
     
 def check_email(request):
@@ -26,7 +31,7 @@ def register_user(request):
         email =  request.POST['email']
         gender =  request.POST['gender']
         dob =  request.POST['date']
-        password =  request.POST['familyName']
+        password =  request.POST['password']
         
         family =  Family.objects.create(name=familyName)
        
@@ -44,7 +49,7 @@ def register_user(request):
         member.set_password(password)
         member.save()
         
-        print(family, member)
+        print(f'FAMILY=>{family}, \nMEMBER=>{member} \n PWD=> {password}')
         
         user = authenticate(request, username=email, password=password)
         print(f'THE USER IS {user}')
@@ -53,14 +58,61 @@ def register_user(request):
             login(request, user, backend="members.customauthbackend.EmailAuthBackend")
             print(f"Has been logged in {user}")
             # Redirect to a success page.
-            return redirect('index')
+            return render(request, 'index.html')
         else:
             # Return an 'invalid login' error message.
             print(f"{user} Never authenticated\nREQUEST.POST details --> {request.POST}")
             messages.error(request, "Invalid email or password! Please try again.")
-            return redirect('index')
+            return render(request, 'index.html')
     
     return render(request, "register.html", {"token": csrftoken})
 
 def login_user(request):
-    return render(request, "login.html")
+    csrftoken = get_token(request)
+    if request.method == "POST":
+        username = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        print(f'THE USER IS {user}')
+        if user:
+            print(f"{username} {password} has been authenticated as {user}.\nREQUEST.POST details --> {request.POST}")
+            login(request, user, backend="members.customauthbackend.EmailAuthBackend")
+            print(f"Has been logged in {user}")
+            # Redirect to a success page.
+            return render(request, 'index.html')
+        else:
+            pass
+
+    return render(request, "login.html", {"token": csrftoken})
+
+def logout_user(request):
+    user = request.user
+    persona = Member.objects.get(uuid=user.uuid)
+    """
+    Update the last activity time for the current user.
+
+    Args:
+        request (HttpRequest): The current HTTP request.
+    """
+    if request.user.is_authenticated:
+        # Get the session key for the current user
+        session_key = request.session.session_key
+
+        # Get the session object for the current user
+        session = Session.objects.get(session_key=session_key)
+
+        # Update the last activity time for the session
+         # Activate the GMT +3 timezone
+         # Get the Nairobi timezone object
+        import pytz
+        nairobi_tz = pytz.timezone('Africa/Nairobi')
+
+        session.last_activity = dt.now(nairobi_tz)
+        session.save()
+        print(persona, session.last_activity)
+    
+    persona.last_logged = session.last_activity
+    persona.save()
+    logout(request)
+    messages.success(request, "Sign Out Successful")
+    return redirect('index')
