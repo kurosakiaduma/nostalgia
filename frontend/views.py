@@ -13,6 +13,9 @@ from datetime import datetime as dt
 
 def index(request):
     print(f'THE USER IS {request.user}')
+    request.session.save()
+    print(request.session)
+    print(request)
     return render(request,"index.html")
     
 def check_email(request):
@@ -48,15 +51,10 @@ def register_user(request):
         #Hash password before saving user to db
         member.set_password(password)
         member.save()
-        
-        print(f'FAMILY=>{family}, \nMEMBER=>{member} \n PWD=> {password}')
-        
         user = authenticate(request, username=email, password=password)
-        print(f'THE USER IS {user}')
         if user:
-            print(f"{email} {password} has been authenticated as {user}.\nREQUEST.POST details --> {request.POST}")
             login(request, user, backend="members.customauthbackend.EmailAuthBackend")
-            print(f"Has been logged in {user}")
+            request.session.save()
             # Redirect to a success page.
             return render(request, 'index.html')
         else:
@@ -76,11 +74,16 @@ def login_user(request):
         print(f'THE USER IS {user}')
         if user:
             print(f"{username} {password} has been authenticated as {user}.\nREQUEST.POST details --> {request.POST}")
-            login(request, user, backend="members.customauthbackend.EmailAuthBackend")
+            login(request, user, backend="backend.customauthbackend.EmailAuthBackend")
+            request.session.save()
+            print(request.session)
+            print(request)
+            messages.success(request, "Successfully logged in!")
             print(f"Has been logged in {user}")
             # Redirect to a success page.
-            return render(request, 'index.html')
+            return redirect('index')
         else:
+            messages.warning(request, "Invalid details")
             pass
 
     return render(request, "login.html", {"token": csrftoken})
