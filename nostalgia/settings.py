@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "reactpy_django",
     "uvicorn",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -39,8 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "graphene_django",
-    "reactpy_django",
     "whitenoise.runserver_nostatic",
+    "frontend",
+    "backend",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+
+# Authentication Backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'backend.customauthbackend.EmailAuthBackend',
+]
+
 
 ROOT_URLCONF = "nostalgia.urls"
 
@@ -111,6 +120,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Password hashers
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -134,6 +151,8 @@ STATICFILES_DIRS = [Path.joinpath(BASE_DIR, "frontend", "static")]
 # Whitenoise Configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# User-uploaded image directory
+MEDIA_ROOT = Path.joinpath(BASE_DIR, "backend/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
