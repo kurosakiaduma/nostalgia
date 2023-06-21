@@ -14,7 +14,9 @@ from datetime import datetime as dt
 def index(request):
     print(f'THE USER IS {request.user}')
     request.session.save()
-    print(request.session)
+    print("SESSION ITEMS")
+    print(request.session.items())
+    print("REQUEST")
     print(request)
     return render(request,"index.html")
     
@@ -76,7 +78,7 @@ def login_user(request):
             print(f"{username} {password} has been authenticated as {user}.\nREQUEST.POST details --> {request.POST}")
             login(request, user, backend="backend.customauthbackend.EmailAuthBackend")
             request.session.save()
-            print(request.session)
+            print(request.session.items())
             print(request)
             messages.success(request, "Successfully logged in!")
             print(f"Has been logged in {user}")

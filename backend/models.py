@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from uuid import uuid1, uuid4
 from datetime import datetime as dt
 import PIL.Image, imageio
@@ -11,6 +11,25 @@ GENDER_CHOICES = (
     ("Non-Binary", "Non-Binary"),
     ("Prefer Not To Say","Prefer Not To Say")
 )
+
+"""
+Model managers
+"""
+class MemberManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email must be set')
+        email = self.normalize_email(email)
+        member = self.model(email=email, **extra_fields)
+        member.set_password(password)
+        member.save()
+        return member
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
 """
 Family and member models
 """    
@@ -31,6 +50,7 @@ class Member(AbstractBaseUser):
     is_housekeeper = models.BooleanField(default=False)
     last_logged = models.DateTimeField(default=dt.now)
 
+    objects = MemberManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
     

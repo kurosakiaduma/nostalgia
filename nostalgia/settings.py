@@ -133,6 +133,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Auth user model
+AUTH_USER_MODEL = 'backend.Member'
+
 # Password hashers
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -164,8 +167,9 @@ STATICFILES_DIRS = [Path.joinpath(BASE_DIR, "frontend", "static")]
 # Whitenoise Configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# User-uploaded image directory
+# User-uploaded image directory and url
 MEDIA_ROOT = Path.joinpath(BASE_DIR, "backend/")
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
