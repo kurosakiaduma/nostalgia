@@ -1,4 +1,4 @@
-from .form_widgets import auth_details
+from .app_widgets import auth_details
 from reactpy import *
 
 @component

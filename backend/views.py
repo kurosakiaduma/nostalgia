@@ -199,3 +199,28 @@ def get_spouses(request):
     age_limit = today - relativedelta(years=17)
     members = Member.objects.filter(family__uuid=family_uuid, birth_date__lte=age_limit).values('id', 'fname', 'lname')
     return JsonResponse(list(members), safe=False)
+
+@login_required
+def user_profile(request):
+    return render(request, "profile.html")
+
+def get_user(request):
+    user_uuid = request.GET.get('userUUID')
+    user = Member.objects.filter(uuid=user_uuid).values(
+        'fname', 'lname', 'email', 'gender', 'birth_date'
+    ).first()
+    # Set the display image URL
+    user['display_image'] = '/static/default-user.png'  # Default image
+    display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='Display image').first()
+    if display_image:
+        user['display_image'] = display_image.image.url
+    return JsonResponse(user)
+
+def get_images(request):
+    user_uuid = request.GET.get('userUUID')
+    images = list(MemberImage.objects.filter(member__uuid=user_uuid).values('image'))
+    # Set the image URL
+    for image in images:
+        image['url'] = image['image']
+        del image['image']
+    return JsonResponse(images, safe=False)

@@ -1,6 +1,8 @@
-2023-06-22 00:29:48,055 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-22 00:29:48,300 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-22 00:29:48,300 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
-2023-06-22 00:29:48,300 DEBUG ReactPy has registered component frontend.src.components.register.newMember
-2023-06-22 00:29:48,300 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-22 00:29:48,300 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-22 00:51:56,289 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-22 00:51:56,515 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-22 00:51:56,515 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-22 00:51:56,515 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-22 00:51:56,515 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-22 00:51:56,515 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-22 00:51:56,515 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
+2023-06-22 00:51:56,520 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile

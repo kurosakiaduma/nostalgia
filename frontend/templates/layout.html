@@ -59,7 +59,7 @@
                           </a>
                           <ul class="dropdown-menu  border zNav">
                               <li>
-                                  <a class="dropdown-item cHover" href="#">Profile</a>
+                                  <a class="dropdown-item cHover" href="{% url 'user_profile' %}">Profile</a>
                               </li>
                               {% if user.is_housekeeper %}
                               <li><hr class=""></li>

@@ -1,0 +1,5 @@
+{% extends 'layout.html' %}
+{% load reactpy %}
+{% block body %}
+{% component "frontend.src.components.profile.UserProfile" userUUID=request.user.uuid %}
+{% endblock body %}

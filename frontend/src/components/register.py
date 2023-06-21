@@ -1,5 +1,5 @@
 from reactpy import *
-from .form_widgets import *
+from .app_widgets import *
     
     
 @component
