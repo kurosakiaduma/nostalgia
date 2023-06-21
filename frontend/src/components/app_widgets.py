@@ -316,7 +316,7 @@ def MemberImageUpload():
 @component
 def LoadingIndicator():
     return html.div(
-        {"class_name": "d-flex justify-content-center align-items-center", "style": {"height": "100vh"}},
+        {"class_name": "d-flex justify-content-center align-items-center main-div"},
         html.div(
             {"class_name": "loading-indicator"},
             html.span({}, "."),
