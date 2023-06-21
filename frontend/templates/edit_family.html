@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
 {% load reactpy %}
 {% block body %}
-{% component "frontend.src.components.register.newMember" csrftoken=token familyName=request.user.family.name %}
+{% component "frontend.src.components.register.newMember" csrftoken=token familyUUID=request.user.family.uuid familyName=request.user.family.name userUUID=request.user.uuid %}
 {% endblock body %}

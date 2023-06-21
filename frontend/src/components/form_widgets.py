@@ -1,7 +1,7 @@
 import aiohttp
 from backend.models import GENDER_CHOICES
 from reactpy import *
-from asyncio import *
+import asyncio
 
 
 @component
@@ -16,7 +16,7 @@ def DateInput():
             "class_name": "form-label mb-3",
             "html_for": "date-input"
             },
-                   "Date:"
+                   "Birth Date:"
         ),
         html.input({
             "type": "date",
@@ -142,9 +142,42 @@ def genderSelect():
                                 )
                     )
 
+@component
+def SpouseSelect(familyUUID:str, userUUID:str):
+    [spouses, setSpouses] = use_state([])
+    [spouse, setSpouse] = use_state(None)
+    
+    async def fetch_spouses():
+        async with aiohttp.ClientSession() as session:
+            # Fetch spouses
+            spouses_response = await session.get(f'http://localhost:8000/api/get-spouses?familyUUID={familyUUID}&userUUID={userUUID}')
+            # Check the response status and update the state
+            if spouses_response.status == 200:
+                spouses_data = await spouses_response.json()
+                print(f'SPOUSES DATA=>{spouses_data}')
+                setSpouses(spouses_data)
+                
+    use_effect(fetch_spouses, [])
+    
+    return html.div(
+        html.div({"class": "mb-3"},
+            html.label({
+                "html_for": "spouse-select",
+                "class_name": "mb-3"}, "Spouse:"),
+            html.select({   
+                        "name": "spouse",
+                        "class_name": "form-control",
+                        "id": "spouse-select",
+                        "value": spouse,
+                        "onChange": lambda event: setSpouse(event['target']['value'])
+                        },
+                        [html.option({"value": ""}, "None")] + [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in spouses]
+                        )
+            )
+        )
 
 @component
-def ParentSelect(familyName:str):
+def ParentSelect(familyUUID:str, userUUID:str):
     [fathers, setFathers] = use_state([])
     [mothers, setMothers] = use_state([])    
     [mother, setMother] = use_state(None)
@@ -152,20 +185,18 @@ def ParentSelect(familyName:str):
     
     async def fetch_parents():
         async with aiohttp.ClientSession() as session:
-            # Fetch fathers and mothers in parallel
-            fathers_response, mothers_response = await gather(
-                session.get(f'http://localhost:8000/api/get-fathers?familyName={familyName}'),
-                session.get(f'http://localhost:8000/api/get-mothers?familyName={familyName}')
-            )
-            print("DONE WITH ASYNCIO")
+            # Fetch fathers
+            fathers_response = await session.get(f'http://localhost:8000/api/get-fathers?familyUUID={familyUUID}&userUUID={userUUID}')
             # Check the response status and update the state
             if fathers_response.status == 200:
                 fathers_data = await fathers_response.json()
-                print(f'FATHERS DATA=>{fathers_data}')
                 setFathers(fathers_data)
+            
+            # Fetch mothers
+            mothers_response = await session.get(f'http://localhost:8000/api/get-mothers?familyUUID={familyUUID}&userUUID={userUUID}')
+            # Check the response status and update the state
             if mothers_response.status == 200:
                 mothers_data = await mothers_response.json()
-                print(f'MOTHERS DATA=>{mothers_data}')
                 setMothers(mothers_data)
                 
     use_effect(fetch_parents, [])
@@ -182,9 +213,9 @@ def ParentSelect(familyName:str):
                 "value": mother,
                 "onChange": lambda event: setMother(event['target']['value'])
             },
-            [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in mothers]
-            )
-        ),
+                        [html.option({"value": ""}, "None")] + [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in mothers]
+                        )
+            ),
         html.div({"class": "mb-3"},
             html.label({
                 "html_for": "father-select",
@@ -196,7 +227,7 @@ def ParentSelect(familyName:str):
                 "value": father,
                 "onChange": lambda event: setFather(event['target']['value'])
             },
-            [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in fathers]
+                            [html.option({"value": ""}, "None")] + [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in fathers]
             )
         )
     )
@@ -230,10 +261,10 @@ def auth_details():
                     setEmailError('')
     
     return html.div(
-        {"class_name": "mb-3"},
+        {"class_name": "row mb-3"},
         html.div
         (
-        {"class_name": "mb-3"},
+        {"class_name": "mb-3 col-md-6"},
         html.label({"class_name": "form-label"}, "Email"),
         html.input({
             "type": "email",
@@ -246,7 +277,7 @@ def auth_details():
         html.div({"class_name": "invalid-feedback"}, emailError),
         ),
         html.div(
-            {"class_name": "mb-3"},
+            {"class_name": "mb-3 col-md-6"},
                         html.label({"class_name": "form-label"}, "Password"),
                         html.input({
                             "type": "password",
@@ -265,3 +296,19 @@ def auth_details():
                     "Submit"
                     )
         )
+    
+@component
+def MemberImageUpload():
+    [image, setImage] = use_state(None)
+    
+    return html.div(
+        {"class_name": "mb-3"},
+        html.label({"class_name": "form-label"}, "Family member image: "),
+        html.input({
+            "class_name": "form-control",
+            "name":"image",
+            "type": "file",
+            "accept": "image/*",
+            "onChange": lambda event: setImage(event['target']['files'][0])
+        }),
+    )

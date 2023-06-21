@@ -12,10 +12,5 @@ from datetime import datetime as dt
 
 
 def index(request):
-    print(f'THE USER IS {request.user}')
     request.session.save()
-    print("SESSION ITEMS")
-    print(request.session.items())
-    print("REQUEST")
-    print(request)
     return render(request,"index.html")
