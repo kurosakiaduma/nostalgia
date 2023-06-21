@@ -20,7 +20,7 @@ class EmailAuthBackend():
 
     def get_user(self, uuid):
         try:
-            return Member.objects.get(uuid=uuid)
+            return Member.objects.get(pk=uuid)
         except:
-            logger.debug(f"User with uuid {uuid} not found")
+            logger.debug(f"User with id {uuid} not found")
             return None
