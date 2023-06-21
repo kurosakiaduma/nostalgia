@@ -1,8 +1,10 @@
-2023-06-21 10:38:48,042 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-21 10:38:48,281 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-21 10:38:48,281 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-21 10:38:48,281 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
-2023-06-21 10:40:57,615 ERROR ReactPy websocket authentication has failed!
+2023-06-21 14:11:07,884 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-21 14:11:08,155 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-21 14:11:08,155 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-21 14:11:08,155 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-21 14:11:08,155 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-21 14:11:08,155 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-21 14:11:09,042 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -26,4 +28,4 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-21 10:40:57,720 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-21 14:11:09,089 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.

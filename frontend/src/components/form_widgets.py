@@ -1,6 +1,7 @@
 import aiohttp
 from backend.models import GENDER_CHOICES
 from reactpy import *
+from asyncio import *
 
 
 @component
@@ -53,6 +54,31 @@ def lastName():
             })
         )
 
+@component
+def otherNames():
+    [otherNames, setotherNames] = use_state('')
+    
+    return html.div(
+        {
+            "class_name": "mb-3"
+        },
+        html.label
+        ({
+            "html_for": "otherNames",
+            "class_name": "form-label"
+            }, "Other names"
+        ),
+        html.input
+        ({
+            "type": "text",
+            "name":"otherNames",
+            "class_name": "form-control","required": "True",
+            "value": otherNames,
+            "title": "Your other names",
+            "onChange": lambda event: setotherNames(event['target']['value'])
+            })
+        )
+    
 @component
 def firstName():
     [firstName, setFirstName] = use_state('')
@@ -115,6 +141,66 @@ def genderSelect():
                                 [html.option({"value": value}, label) for value, label in GENDER_CHOICES]
                                 )
                     )
+
+
+@component
+def ParentSelect(familyName:str):
+    [fathers, setFathers] = use_state([])
+    [mothers, setMothers] = use_state([])    
+    [mother, setMother] = use_state(None)
+    [father, setFather] = use_state(None)
+    
+    async def fetch_parents():
+        async with aiohttp.ClientSession() as session:
+            # Fetch fathers and mothers in parallel
+            fathers_response, mothers_response = await gather(
+                session.get(f'http://localhost:8000/api/get-fathers?familyName={familyName}'),
+                session.get(f'http://localhost:8000/api/get-mothers?familyName={familyName}')
+            )
+            print("DONE WITH ASYNCIO")
+            # Check the response status and update the state
+            if fathers_response.status == 200:
+                fathers_data = await fathers_response.json()
+                print(f'FATHERS DATA=>{fathers_data}')
+                setFathers(fathers_data)
+            if mothers_response.status == 200:
+                mothers_data = await mothers_response.json()
+                print(f'MOTHERS DATA=>{mothers_data}')
+                setMothers(mothers_data)
+                
+    use_effect(fetch_parents, [])
+    
+    return html.div(
+        html.div({"class": "mb-3"},
+            html.label({
+                "html_for": "mother-select",
+                "class_name": "mb-3"}, "Mother:"),
+            html.select({   
+                "name": "mother",
+                "class_name": "form-control",
+                "id": "mother-select",
+                "value": mother,
+                "onChange": lambda event: setMother(event['target']['value'])
+            },
+            [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in mothers]
+            )
+        ),
+        html.div({"class": "mb-3"},
+            html.label({
+                "html_for": "father-select",
+                "class_name": "mb-3"}, "Father:"),
+            html.select({   
+                "name": "father",
+                "class_name": "form-control",
+                "id": "father-select",
+                "value": father,
+                "onChange": lambda event: setFather(event['target']['value'])
+            },
+            [html.option({"value": member['id']}, f"{member['fname']} {member['lname']}") for member in fathers]
+            )
+        )
+    )
+
 
 @component
 def auth_details():

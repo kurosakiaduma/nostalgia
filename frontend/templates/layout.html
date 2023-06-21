@@ -64,12 +64,12 @@
                               {% if user.is_housekeeper %}
                               <li><hr class=""></li>
                               <li class="nav-item">
-                                  <a class="dropdown-item" href="#">Edit your family</a>
+                                  <a class="dropdown-item" href="{% url 'edit_family' %}">Edit your family</a>
                               </li>    
                               {% endif %}       
                               <li><hr class=""></li>
                               <li>
-                                  <a class="dropdown-item" href="#">Sign Out</a>
+                                  <a class="dropdown-item" href="{% url 'logout_user' %}">Sign Out</a>
                               </li>
                           </ul>
                       </li>

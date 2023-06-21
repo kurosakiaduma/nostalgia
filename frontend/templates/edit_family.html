@@ -1,0 +1,5 @@
+{% extends 'layout.html' %}
+{% load reactpy %}
+{% block body %}
+{% component "frontend.src.components.register.newMember" csrftoken=token familyName=request.user.family.name %}
+{% endblock body %}
