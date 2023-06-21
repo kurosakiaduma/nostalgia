@@ -125,44 +125,58 @@ def edit_family(request):
     print(f"THE FAMILY IS {request.user.family}")
     csrftoken = get_token(request)
     if request.method == "POST":
-        print(f'POST REQUEST DETAILS=> {request.POST}')
-        familyName =  request.user.family.title()
+        print(f'\nPOST REQUEST DETAILS=> {request.POST}\n')
+        family =  request.user.family.uuid
         firstName =  request.POST['firstName'].title()
         otherNames = request.POST['otherNames'].title()
         lastName =  request.POST['lastName'].title()
         email =  request.POST['email']
-        father = request.POST['father'] or None
-        mother = request.POST['mother'] or None
+        father_id = request.POST['father'] or None
+        mother_id = request.POST['mother'] or None
         spouse = request.POST['spouse'] or None
         gender =  request.POST['gender']
         dob =  request.POST['date']
         password =  request.POST['password']
         
-        family =  Family.objects.get(name=familyName)
+        family =  Family.objects.get(uuid=family)
        
+        
+        # Get father instance
+        father = None
+        if father_id:
+            father = Member.objects.get(id=father_id)
+        
+        # Get mother instance
+        mother = None
+        if mother_id:
+            mother = Member.objects.get(id=mother_id)
+        
         member = Member.objects.create(
             email=email,
             fname=firstName,
             lname=lastName,
-            other_names=otherNames,
             gender=gender,
+            other_names = otherNames,
             birth_date=dob, 
             password=password,
-            father=None or father,
-            mother = None or mother,
-            spouse_of = None or spouse,
+            father=father,
+            mother=mother,
             family=family,
             is_housekeeper=False,
         )
-                 
+        
         #Hash password before saving user to db
         member.set_password(password)
         member.save()
         
+        # Handle spouse assignment
+        if spouse:
+            member.spouse_of.set([spouse])
+        
         # Handle image upload
         image = request.FILES.get('image')
         if image:
-            MemberImage.objects.create(member=member, image=image, alt=f"Display image of {member.fname} {member.fname} {member.fname}")
+            MemberImage.objects.create(member=member, image=image)
 
     return render(request, "edit_family.html", {"token": csrftoken})
 

@@ -163,7 +163,7 @@ def SpouseSelect(familyUUID:str, userUUID:str):
         html.div({"class": "mb-3"},
             html.label({
                 "html_for": "spouse-select",
-                "class_name": "mb-3"}, "Spouse:"),
+                "class_name": "mb-3"}, "Spouse 💍"),
             html.select({   
                         "name": "spouse",
                         "class_name": "form-control",
