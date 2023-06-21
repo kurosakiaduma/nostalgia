@@ -11,7 +11,6 @@ GENDER_CHOICES = (
     ("Non-Binary", "Non-Binary"),
     ("Prefer Not To Say","Prefer Not To Say")
 )
-
 """
 Model managers
 """
@@ -82,6 +81,7 @@ class MemberImageManager(models.Manager):
 class MemberImage(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to=get_upload_path)
+    alt = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     objects = MemberImageManager()

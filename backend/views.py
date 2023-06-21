@@ -1,4 +1,4 @@
-from backend.models import Family, Member
+from backend.models import Family, Member, MemberImage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from datetime import datetime as dt
+from datetime import datetime as dt, date
+from dateutil.relativedelta import relativedelta
 
 
 def index(request):
@@ -121,17 +122,66 @@ def logout_user(request):
 
 @login_required
 def edit_family(request):
+    print(f"THE FAMILY IS {request.user.family}")
     csrftoken = get_token(request)
+    if request.method == "POST":
+        print(f'POST REQUEST DETAILS=> {request.POST}')
+        familyName =  request.user.family.title()
+        firstName =  request.POST['firstName'].title()
+        otherNames = request.POST['otherNames'].title()
+        lastName =  request.POST['lastName'].title()
+        email =  request.POST['email']
+        father = request.POST['father'] or None
+        mother = request.POST['mother'] or None
+        spouse = request.POST['spouse'] or None
+        gender =  request.POST['gender']
+        dob =  request.POST['date']
+        password =  request.POST['password']
+        
+        family =  Family.objects.get(name=familyName)
+       
+        member = Member.objects.create(
+            email=email,
+            fname=firstName,
+            lname=lastName,
+            other_names=otherNames,
+            gender=gender,
+            birth_date=dob, 
+            password=password,
+            father=None or father,
+            mother = None or mother,
+            spouse_of = None or spouse,
+            family=family,
+            is_housekeeper=False,
+        )
+                 
+        #Hash password before saving user to db
+        member.set_password(password)
+        member.save()
+        
+        # Handle image upload
+        image = request.FILES.get('image')
+        if image:
+            MemberImage.objects.create(member=member, image=image, alt=f"Display image of {member.fname} {member.fname} {member.fname}")
+
     return render(request, "edit_family.html", {"token": csrftoken})
 
 def get_fathers(request):
-    family_name = request.GET.get('familyName')
-    print(f'I AM HERE IN GET MEMEBERS=>{(request.user)}\n')
-    members = Member.objects.filter(family__name=family_name, gender="Male").values('id', 'fname', 'lname')
+    family_uuid = request.GET.get('familyUUID')
+    user_uuid = request.GET.get('userUUID')
+    members = Member.objects.filter(family__uuid=family_uuid, gender="Male").values('id', 'fname', 'lname')
     return JsonResponse(list(members), safe=False)
 
 def get_mothers(request):
-    family_name = request.GET.get('familyName')
-    print(f'I AM HERE IN GET MEMEBERS=>{(request.user)}\n')
-    members = Member.objects.filter(family__name=family_name, gender="Female").values('id', 'fname', 'lname')
+    family_uuid = request.GET.get('familyUUID')
+    user_uuid = request.GET.get('userUUID')
+    members = Member.objects.filter(family__uuid=family_uuid, gender="Female").values('id', 'fname', 'lname')
+    return JsonResponse(list(members), safe=False)
+
+def get_spouses(request):
+    family_uuid = request.GET.get('familyUUID')
+    user_uuid = request.GET.get('userUUID')
+    today = date.today()
+    age_limit = today - relativedelta(years=17)
+    members = Member.objects.filter(family__uuid=family_uuid, birth_date__lte=age_limit).values('id', 'fname', 'lname')
     return JsonResponse(list(members), safe=False)

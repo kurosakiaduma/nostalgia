@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/check-email', check_email, name='check-email'),
     path('api/get-fathers', get_fathers, name='get-fathers'),
     path('api/get-mothers', get_mothers, name='get-mothers'),
+    path('api/get-spouses', get_spouses, name='get-spouses'),
     # Page routes
     path("register", register_user, name="register_user"),
     path("login", login_user, name="login_user"),
