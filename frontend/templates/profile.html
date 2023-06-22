@@ -1,9 +1,11 @@
 {% extends 'layout.html' %}
-{% load reactpy %}
-{% block head %}
-<title>{{request.user.name}}'s Profile</title>
-<link href="../static/css/profile.css" type="text/css"/>
-{% endblock head %}
+{% load static reactpy %}
+{% block head%}
+<head>
+    <title>{{request.user.fname}} {{request.user.lname}}'s Profile</title>
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css">
+</head>
+{% endblock %}
 {% block body %}
 {% component 'frontend.src.components.profile.UserProfile' userUUID=request.user.uuid %}
 {% endblock body %}

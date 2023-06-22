@@ -1,6 +1,4 @@
 from django.core.paginator import Paginator
-from dash import dcc
-import dash as html
 from reactpy import *
 from .app_widgets import LoadingIndicator
 import aiohttp
@@ -67,66 +65,67 @@ def UserProfile(userUUID:str):
         )
     
     def renderFamily():
+        print(family['spouse_and_children'])
         return html.div(
             {},
             html.div(
                 {"class_name": "row mb-3"},
                 html.h4({"class_name": "col-md-12 text-center"}, "Spouse & Children"),
                 [html.div(
-                    {"class_name": "col-md-2"},
+                    {"class_name": "col-md-4 col-sm-6 d-flex justify-content-center align-items-center flex-column", "style": {"min-height": "100px"}},
                     html.img({
                         "src": member['display_image'],
-                        "class_name": "rounded-circle",
+                        "class_name": "rounded-circle text-center",
                         "width": 50,
                         "height": 50,
-                        "style": {"border": "2px solid green"}
+                        "style": {"border": f"2px solid {'purple' if member['relation'] == 'spouse' else 'green'}", "object-fit": "cover"}
                     }),
-                    html.p({"class_name": "text-center"}, f"{member['fname']} {member['lname']}")
+                    html.p({"class_name": "text-center", "style": {"height": "1.5em"}}, f"{'💍'+ member['fname']  if member['relation'] == 'spouse' else member['fname']} {member['lname']}")
                 ) for member in family['spouse_and_children']]
             ),
             html.div(
                 {"class_name": "row mb-3"},
                 html.h4({"class_name": "col-md-12 text-center"}, "Parents"),
                 [html.div(
-                    {"class_name": "col-md-2"},
+                    {"class_name": "col-md-6 col-sm-6 d-flex justify-content-center flex-column", "style": {"min-height": "100px"}},
                     html.img({
                         "src": member['display_image'],
-                        "class_name": "rounded-circle",
+                        "class_name": "rounded-circle text-center",
                         "width": 50,
                         "height": 50,
-                        "style": {"border": "2px solid blue"}
+                        "style": {"border": "2px solid blue", "object-fit": "cover"}
                     }),
-                    html.p({"class_name": "text-center"}, f"{member['fname']} {member['lname']}")
+                    html.p({"class_name": "text-center", "style": {"height": "1.5em"}}, f"{member['fname']} {member['lname']}")
                 ) for member in family['parents']]
             ),
             html.div(
                 {"class_name": "row mb-3"},
                 html.h4({"class_name": "col-md-12 text-center"}, "Siblings"),
                 [html.div(
-                    {"class_name": "col-md-2"},
+                    {"class_name": "col-md-4 col-sm-6 d-flex justify-content-center flex-column", "style": {"min-height": "100px"}},
                     html.img({
                         "src": member['display_image'],
-                        "class_name": "rounded-circle",
-                        "width": 50,
-                        "height": 50,
-                        "style": {"border": "2px solid red"}
+                        "class_name": "rounded-circle text-center",
+                        "width": 55,
+                        "height": 55,
+                        "style": {"border": "2px solid red", "object-fit": "cover"}
                     }),
-                    html.p({"class_name": "text-center"}, f"{member['fname']} {member['lname']}")
+                    html.p({"class_name": "text-center", "style": {"height": "1.5em"}}, f"{member['fname']} {member['lname']}")
                 ) for member in family['siblings']]
             ),
             html.div(
                 {"class_name": "row mb-3"},
                 html.h4({"class_name": "col-md-12 text-center"}, "Grandchildren"),
                 [html.div(
-                    {"class_name": "col-md-2"},
+                    {"class_name": "col-md-4 col-sm-6 d-flex justify-content-center flex-column", "style": {"min-height": "100px"}},
                     html.img({
                         "src": member['display_image'],
-                        "class_name": "rounded-circle",
+                        "class_name": "rounded-circle text-center",
                         "width": 50,
                         "height": 50,
-                        "style": {"border": "2px solid orange"}
+                        "style": {"border": "2px solid orange", "object-fit": "cover"}
                     }),
-                    html.p({"class_name": "text-center"}, f"{member['fname']} {member['lname']}")
+                    html.p({"class_name": "text-center", "style": {"height": "1.5em"}}, f"{member['fname']} {member['lname']}")
                 ) for member in family['grandchildren']]
             )
         )
@@ -152,54 +151,62 @@ def UserProfile(userUUID:str):
             html.div(
                 {},
                 html.div(
-                    {"class_name": "card mb-3"},
+                    # Render the pagination buttons using Bootstrap pagination component
+                    {"class_name": "d-flex justify-content-center"},
+                    html.ul(
+                        {
+                            "class_name": "pagination",
+                            "id": "story-pagination",
+                        },
+                        [
+                            # Render the previous button with disabled attribute if it's the first page
+                            html.li(
+                                {
+                                    "key": "previous",
+                                    "class_name": "page-item" + (" disabled" if not page_obj.has_previous() else ""),
+                                },
+                                html.button(
+                                    {
+                                        "class_name": "page-link",
+                                        "disabled": not page_obj.has_previous(),
+                                        "onClick": lambda: props['setPage'](page_obj.previous_page_number())
+                                        },
+                                    "Previous"
+                                    )
+                                ),
+                            # Render the next button with disabled attribute if it's the last page
+                            html.li(
+                                {
+                                    "key": "next",
+                                    "class_name": "page-item" + (" disabled" if not page_obj.has_next() else "")
+                                    },
+                                html.button(
+                                    {
+                                        "class_name": "page-link",
+                                        "disabled": not page_obj.has_next(),
+                                        "onClick": lambda: props['setPage'](page_obj.next_page_number())
+                                        },
+                                    "Next"
+                                    )
+                                )
+                            ]
+                        )
+                    ),
+                html.div(
+                    {"class_name": "mb-3"},
                     html.div(
                         {"class_name": "card-body"},
-                        html.h5({"class_name": "card-title"}, page_obj[0]['title']),
-                        html.p({"class_name": "card-text"}, page_obj[0]['content'])
-                    )
-                )
-            ),
-            html.div(
-                # Render the pagination buttons using Bootstrap pagination component
-                {"class_name": "d-flex justify-content-center"},
-                html.ul(
-                    {"class_name": "pagination"},
-                    [
-                        # Render the previous button with disabled attribute if it's the first page
-                        html.li(
-                            {
-                                "key": "previous",
-                                "class_name": "page-item" + (" disabled" if not page_obj.has_previous() else "")
-                            },
-                            html.button(
-                                {
-                                    "class_name": "page-link",
-                                    "disabled": not page_obj.has_previous(),
-                                    "onClick": lambda: props['setPage'](page_obj.previous_page_number())
-                                },
-                                "Previous"
-                            )
-                        ),
-                        # Render the next button with disabled attribute if it's the last page
-                        html.li(
-                            {
-                                "key": "next",
-                                "class_name": "page-item" + (" disabled" if not page_obj.has_next() else "")
-                            },
-                            html.button(
-                                {
-                                    "class_name": "page-link",
-                                    "disabled": not page_obj.has_next(),
-                                    "onClick": lambda: props['setPage'](page_obj.next_page_number())
-                                },
-                                "Next"
-                            )
+                        html.h5({"class_name": "card-title text-center", "id": "story-title"}, page_obj[0]['title']),
+                        html.hr(),
+                        html.div({"class_name": "card-text"},
+                                 [
+                                     html.p({}, paragraph) for paragraph in page_obj[0]['content'].split('\n') if paragraph
+                                     ]
+                                 )
                         )
-                    ]
-                )
-            )
-        ]
+                    )
+                ),
+            ]
 
     return html.div(
         {"class_name": "container"},
@@ -235,7 +242,6 @@ def UserProfile(userUUID:str):
             ),
             html.div(
                 {"class_name": "col-md-6"},
-                html.h3({"class_name": "text-center mt-5"}, activeTab.capitalize()),
                 html.ul(
                     {"class_name": "nav nav-tabs"},
                     html.li({"class_name":"nav-item"},
@@ -245,7 +251,7 @@ def UserProfile(userUUID:str):
                                     "onClick": lambda e: setActiveTab('images'),
                                     "className": "nav-link "+("active" if activeTab == 'images' else "")
                                     },
-                                "Images"
+                                "Images 📸"
                                 )
                             ),
                     html.li({"class_name":"nav-item"},
@@ -255,7 +261,7 @@ def UserProfile(userUUID:str):
                                     "onClick": lambda e: setActiveTab('family'),
                                     "className": "nav-link "+("active" if activeTab == 'family' else "")
                                     },
-                                "Family"
+                                "Family 🏠"
                                 )
                             ),
                     html.li({"class_name":"nav-item"},
@@ -265,7 +271,7 @@ def UserProfile(userUUID:str):
                                     "onClick": lambda e: setActiveTab('stories'),
                                     "className": "nav-link "+("active" if activeTab == 'stories' else "")
                                 },
-                                "Stories"
+                                "Stories 📔"
                             )
                             )
                     ),

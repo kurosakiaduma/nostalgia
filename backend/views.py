@@ -131,15 +131,14 @@ def edit_family(request):
         otherNames = request.POST['otherNames'].title()
         lastName =  request.POST['lastName'].title()
         email =  request.POST['email']
-        father_id = request.POST['father'] or None
-        mother_id = request.POST['mother'] or None
-        spouse = request.POST['spouse'] or None
+        father_id = request.POST.get('father')
+        mother_id = request.POST.get('mother')
+        spouse = request.POST.get('spouse')
         gender =  request.POST['gender']
         dob =  request.POST['date']
         password =  request.POST['password']
         
         family =  Family.objects.get(uuid=family)
-       
         
         # Get father instance
         father = None
@@ -156,14 +155,15 @@ def edit_family(request):
             fname=firstName,
             lname=lastName,
             gender=gender,
-            other_names = otherNames,
-            birth_date=dob, 
+            other_names=otherNames,
+            birth_date=dob,
             password=password,
             father=father,
             mother=mother,
             family=family,
             is_housekeeper=False,
         )
+
         
         #Hash password before saving user to db
         member.set_password(password)
@@ -252,7 +252,7 @@ def get_family(request):
         spouse_and_children = list(spouse) + list(children)
         parents = Member.objects.filter(children_mother=user) | Member.objects.filter(children_father=user)
         parents = parents.values('uuid', 'fname', 'lname')
-        siblings = Member.objects.filter(mother=user.mother, family=user.family) | Member.objects.filter(father=user.father, family=user.family)
+        siblings = Member.objects.filter(mother=user.mother, family=user.family, mother__isnull=False) | Member.objects.filter(father=user.father, family=user.family, father__isnull=False)        
         siblings = siblings.exclude(uuid=user.uuid).values('uuid', 'fname', 'lname')
         grandchildren = Member.objects.filter(mother__in=children.values_list('id')) | Member.objects.filter(father__in=children.values_list('id'))
         grandchildren = grandchildren.values('uuid', 'fname', 'lname')
@@ -263,6 +263,13 @@ def get_family(request):
             display_image = MemberImage.objects.filter(member__uuid=member['uuid'], alt='Display image').first()
             if display_image:
                 member['display_image'] = display_image.image.url
+        
+        # Set the relation attribute for each member in the spouse_and_children list
+        for member in spouse_and_children:
+            if member in spouse:
+                member['relation'] = 'spouse'
+            else:
+                member['relation'] = 'child'
         
         return JsonResponse({
             'spouse_and_children': spouse_and_children,
