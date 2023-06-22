@@ -1,3 +1,6 @@
+from django.core.paginator import Paginator
+from dash import dcc
+import dash as html
 from reactpy import *
 from .app_widgets import LoadingIndicator
 import aiohttp
@@ -9,7 +12,8 @@ def UserProfile(userUUID:str):
     [family, setFamily] = use_state(None)
     [stories, setStories] = use_state([])
     [activeTab, setActiveTab] = use_state('images')
-    
+    [page, setPage] = use_state(1)
+    location = use_location()
     
     async def fetch_user():
         async with aiohttp.ClientSession() as session:
@@ -42,6 +46,8 @@ def UserProfile(userUUID:str):
                 setStories(stories_data)
                 
     use_effect(fetch_user, [])
+    
+    print(f"\n\nTHESE ARE THE STORIES=> {stories}\n\n")
     
     if not user:
         return LoadingIndicator()
@@ -124,20 +130,77 @@ def UserProfile(userUUID:str):
                 ) for member in family['grandchildren']]
             )
         )
-    
-    def renderStories():
-        return html.div(
-            {},
-            [html.div(
-                {"class_name": "card mb-3"},
+        
+    def renderStories(props: dict):
+        # Assume stories is a list of dictionaries with title and content keys
+        stories = props['stories']
+
+        # Set the number of stories per page
+        per_page = 1
+
+        # Create a Paginator object with the stories list and the per_page value
+        paginator = Paginator(stories, per_page)
+
+        # Get the current page number from the state or default to 1
+        page_number = props['page']
+
+        # Get the current page object from the paginator
+        page_obj = paginator.get_page(page_number)
+
+        # Render the story in the current page using Bootstrap card
+        return [
+            html.div(
+                {},
                 html.div(
-                    {"class_name": "card-body"},
-                    html.h5({"class_name": "card-title"}, story['title']),
-                    html.p({"class_name": "card-text"}, story['content'])
+                    {"class_name": "card mb-3"},
+                    html.div(
+                        {"class_name": "card-body"},
+                        html.h5({"class_name": "card-title"}, page_obj[0]['title']),
+                        html.p({"class_name": "card-text"}, page_obj[0]['content'])
+                    )
                 )
-            ) for story in stories]
-        )
-    
+            ),
+            html.div(
+                # Render the pagination buttons using Bootstrap pagination component
+                {"class_name": "d-flex justify-content-center"},
+                html.ul(
+                    {"class_name": "pagination"},
+                    [
+                        # Render the previous button with disabled attribute if it's the first page
+                        html.li(
+                            {
+                                "key": "previous",
+                                "class_name": "page-item" + (" disabled" if not page_obj.has_previous() else "")
+                            },
+                            html.button(
+                                {
+                                    "class_name": "page-link",
+                                    "disabled": not page_obj.has_previous(),
+                                    "onClick": lambda: props['setPage'](page_obj.previous_page_number())
+                                },
+                                "Previous"
+                            )
+                        ),
+                        # Render the next button with disabled attribute if it's the last page
+                        html.li(
+                            {
+                                "key": "next",
+                                "class_name": "page-item" + (" disabled" if not page_obj.has_next() else "")
+                            },
+                            html.button(
+                                {
+                                    "class_name": "page-link",
+                                    "disabled": not page_obj.has_next(),
+                                    "onClick": lambda: props['setPage'](page_obj.next_page_number())
+                                },
+                                "Next"
+                            )
+                        )
+                    ]
+                )
+            )
+        ]
+
     return html.div(
         {"class_name": "container"},
         html.div(
@@ -206,7 +269,7 @@ def UserProfile(userUUID:str):
                             )
                             )
                     ),
-                (renderImages() if activeTab == 'images' else (renderFamily() if activeTab == 'family' else renderStories()))
+                (renderImages() if activeTab == 'images' else (renderFamily() if activeTab == 'family' else renderStories({'stories': stories, 'page': page, 'setPage': setPage, 'location': location})))
                 )
             )
         )

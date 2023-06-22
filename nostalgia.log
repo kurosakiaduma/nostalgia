@@ -1,12 +1,37 @@
-2023-06-22 04:34:00,073 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
-2023-06-22 04:34:00,294 DEBUG ReactPy has registered component frontend.src.components.register.newMember
-2023-06-22 04:34:00,294 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
-2023-06-22 04:34:00,295 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
-2023-06-22 04:34:00,295 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-22 04:34:00,295 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
-2023-06-22 04:34:00,295 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-22 04:34:00,297 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-22 04:34:05,648 ERROR ReactPy websocket authentication has failed!
+2023-06-22 12:32:08,236 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-22 12:32:08,470 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-22 12:32:08,470 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
+2023-06-22 12:32:08,474 ERROR [91mReactPy failed to register component 'frontend.src.components.profile.UserProfile'! This component path may not be valid, or an exception may have occurred while importing.[0m
+Traceback (most recent call last):
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\utils.py", line 104, in import_dotted_path
+    module = import_module(module_name)
+  File "C:\Users\Tevin\anaconda3\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\frontend\src\components\profile.py", line 2, in <module>
+    from dash import dcc
+ModuleNotFoundError: No module named 'dash'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\utils.py", line 201, in register_components
+    _register_component(component)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\utils.py", line 94, in _register_component
+    REACTPY_REGISTERED_COMPONENTS[dotted_path] = import_dotted_path(dotted_path)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\utils.py", line 106, in import_dotted_path
+    raise RuntimeError(
+RuntimeError: Failed to import 'frontend.src.components.profile' while loading 'UserProfile'
+2023-06-22 12:32:08,474 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-22 12:32:08,476 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-22 12:32:08,477 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-22 12:32:08,477 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-22 12:32:34,851 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -30,5 +55,4 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 04:34:05,688 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
-2023-06-22 04:34:07,921 WARNING Not Found: /static/default-user.png
+2023-06-22 12:32:34,856 WARNING Attempt to access invalid ReactPy component: 'frontend.src.components.profile.UserProfile'

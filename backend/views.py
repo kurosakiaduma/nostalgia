@@ -252,7 +252,7 @@ def get_family(request):
         spouse_and_children = list(spouse) + list(children)
         parents = Member.objects.filter(children_mother=user) | Member.objects.filter(children_father=user)
         parents = parents.values('uuid', 'fname', 'lname')
-        siblings = Member.objects.filter(mother=user.mother) | Member.objects.filter(father=user.father)
+        siblings = Member.objects.filter(mother=user.mother, family=user.family) | Member.objects.filter(father=user.father, family=user.family)
         siblings = siblings.exclude(uuid=user.uuid).values('uuid', 'fname', 'lname')
         grandchildren = Member.objects.filter(mother__in=children.values_list('id')) | Member.objects.filter(father__in=children.values_list('id'))
         grandchildren = grandchildren.values('uuid', 'fname', 'lname')
@@ -280,4 +280,4 @@ def get_stories(request):
         return JsonResponse({'error': 'Missing userUUID parameter'}, status=400)
     
     stories = Story.objects.filter(author__uuid=userUUID).values('title', 'content')
-    return JsonResponse({'stories': list(stories)})
+    return JsonResponse(list(stories),safe=False)
