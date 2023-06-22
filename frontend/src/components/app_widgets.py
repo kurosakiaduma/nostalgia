@@ -1,7 +1,6 @@
 import aiohttp
 from backend.models import GENDER_CHOICES
 from reactpy import *
-import asyncio
 
 
 @component
@@ -318,33 +317,7 @@ def LoadingIndicator():
     return html.div(
         {"class_name": "d-flex justify-content-center align-items-center main-div"},
         html.div(
-            {"class_name": "loading-indicator"},
-            html.span({}, "."),
-            html.span({}, "."),
-            html.span({}, ".")
-        ),
-        css={
-            ".loading-indicator span": {
-                "animation-name": "bounce",
-                "animation-duration": "1.4s",
-                "animation-iteration-count": "infinite",
-                "animation-timing-function": "ease-in-out",
-                "display": "inline-block",
-                "font-size": 24,
-            },
-            ".loading-indicator span:nth-child(1)": {
-                "animation-delay": "-0.32s",
-            },
-            ".loading-indicator span:nth-child(2)": {
-                "animation-delay": "-0.16s",
-            },
-            "@keyframes bounce": {
-                "0%, 80%, 100%": {
-                    "transform": "scale(0)",
-                },
-                "40%": {
-                    "transform": "scale(1)",
-                }
-            }
-        }
+            {"class_name": "spinner-border text-primary", "role": "status"},
+            html.span({"class_name": "sr-only"}, "Loading...")
+        )
     )

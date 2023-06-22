@@ -9,6 +9,9 @@ urlpatterns = [
     path('api/get-spouses', get_spouses, name='get-spouses'),
     path('api/get-user', get_user, name='get-user'),
     path('api/get-images', get_images, name='get-images'),
+    path('api/get-family', get_family, name='get-family'),
+    path('api/get-stories', get_stories, name='get-stories'),
+
     # Page routes
     path("register", register_user, name="register_user"),
     path("login", login_user, name="login_user"),

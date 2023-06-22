@@ -1,4 +1,4 @@
-from backend.models import Family, Member, MemberImage
+from backend.models import Family, Member, MemberImage, Story
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
@@ -206,21 +206,78 @@ def user_profile(request):
 
 def get_user(request):
     user_uuid = request.GET.get('userUUID')
-    user = Member.objects.filter(uuid=user_uuid).values(
-        'fname', 'lname', 'email', 'gender', 'birth_date'
-    ).first()
-    # Set the display image URL
-    user['display_image'] = '/static/default-user.png'  # Default image
-    display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='Display image').first()
-    if display_image:
-        user['display_image'] = display_image.image.url
-    return JsonResponse(user)
+    if not user_uuid:
+        return JsonResponse({'error': 'Missing userUUID parameter'}, status=400)
+    
+    try:
+        user = Member.objects.filter(uuid=user_uuid).values(
+            'fname', 'lname', 'other_names', 'gender', 'birth_date', 
+        ).first()
+        # Set the display image URL
+        user['display_image'] = '/static/default-user.png'  # Default image
+        display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='Display image').first()
+        if display_image:
+            user['display_image'] = display_image.image.url
+        # Set the family name
+        family_name = Family.objects.filter(member__uuid=user_uuid).values_list('name', flat=True).first()
+        user['family_name'] = family_name
+        return JsonResponse(user)
+    except Member.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+
 
 def get_images(request):
     user_uuid = request.GET.get('userUUID')
+    if not user_uuid:
+        return JsonResponse({'error': 'Missing userUUID parameter'}, status=400)
+    
     images = list(MemberImage.objects.filter(member__uuid=user_uuid).values('image'))
     # Set the image URL
     for image in images:
         image['url'] = image['image']
         del image['image']
     return JsonResponse(images, safe=False)
+
+def get_family(request):
+    userUUID = request.GET.get('userUUID')
+    if not userUUID:
+        return JsonResponse({'error': 'Missing userUUID parameter'}, status=400)
+    
+    try:
+        user = Member.objects.get(uuid=userUUID)
+        spouse = Member.objects.filter(spouse_of=user).values('uuid', 'fname', 'lname')
+        children = Member.objects.filter(mother=user) | Member.objects.filter(father=user)
+        children = children.values('uuid', 'fname', 'lname')
+        spouse_and_children = list(spouse) + list(children)
+        parents = Member.objects.filter(children_mother=user) | Member.objects.filter(children_father=user)
+        parents = parents.values('uuid', 'fname', 'lname')
+        siblings = Member.objects.filter(mother=user.mother) | Member.objects.filter(father=user.father)
+        siblings = siblings.exclude(uuid=user.uuid).values('uuid', 'fname', 'lname')
+        grandchildren = Member.objects.filter(mother__in=children.values_list('id')) | Member.objects.filter(father__in=children.values_list('id'))
+        grandchildren = grandchildren.values('uuid', 'fname', 'lname')
+        
+        # Set the display image URL for each family member
+        for member in spouse_and_children + list(parents) + list(siblings) + list(grandchildren):
+            member['display_image'] = '/static/default-user.png'  # Default image
+            display_image = MemberImage.objects.filter(member__uuid=member['uuid'], alt='Display image').first()
+            if display_image:
+                member['display_image'] = display_image.image.url
+        
+        return JsonResponse({
+            'spouse_and_children': spouse_and_children,
+            'parents': list(parents),
+            'siblings': list(siblings),
+            'grandchildren': list(grandchildren)
+        })
+    except Member.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+
+def get_stories(request):
+    userUUID = request.GET.get('userUUID')
+    if not userUUID:
+        return JsonResponse({'error': 'Missing userUUID parameter'}, status=400)
+    
+    stories = Story.objects.filter(author__uuid=userUUID).values('title', 'content')
+    return JsonResponse({'stories': list(stories)})
