@@ -224,21 +224,482 @@ def UserProfile(userUUID:str):
                             "class_name": "rounded-circle mx-auto d-block",
                             "width": 150,
                             "height": 150
-                        }),
+                            }),
                         html.hr(),
-                        html.p({"class_name": "card-text"}, f"Other names: {user['other_names']}"),
-                        html.p({"class_name": "card-text"}, f"Gender: {user['gender']}"),
-                        html.p({"class_name": "card-text"}, f"Birth Date: {user['birth_date']}"),
-                        html.p({"class_name": "card-text"}, f"Family Name: {user['family_name']}"),
-                        html.a(
+                        # Div to center the content below the image
+                        html.div(
+                            {"class_name": "text-center"},
+                            html.p({"class_name": "card-text"}, f"Other names: {user['other_names']}"),
+                            html.p({"class_name": "card-text"}, f"Gender: {user['gender']}"),
+                            html.p({"class_name": "card-text"}, f"Birth Date: {user['birth_date']}"),
+                            html.p({"class_name": "card-text"}, f"Family Name: {user['family_name']}"),
+                            ),
+                        # Three buttons with modals
+                        html.button(
                             {
-                                "href": f"/edit-user?userUUID={userUUID}",
-                                "class_name": "btn btn-primary btn-block"
-                            },
+                                # Use data-bs-toggle and data-bs-target attributes to link the button to the modal
+                                "href": "#",
+                                "data-bs-toggle": "modal",
+                                "data-bs-target": "#edit-profile-modal",
+                                "class_name": "btn btn-primary btn-block", 
+                                "type": "button",
+                                },
                             "Edit Profile"
+                            ),
+                        # Create a modal for editing profile
+                        html.div(
+                            {
+                                "id": "edit-profile-modal",
+                                "class_name": "modal fade",
+                                # Use tabindex, role and aria attributes for accessibility
+                                "tabindex": "-1",
+                                "role": "dialog",
+                                "aria-labelledby": 
+                                    "edit-profile-modal-label",
+                                    "aria-hidden": "true"
+                                    },
+                            html.div(
+                                {"class_name": 
+                                    "modal-dialog modal-dialog-centered",
+                                    "role": 
+                                        "document"},
+                                html.div(
+                                    {
+                                        "class_name":"modal-content"
+                                    },
+                                    # Add a modal header with a title and a close button
+                                    html.div( 
+                                    {
+                                        "class_name":"modal-header"
+                                    },
+                                    html.h5(
+                                        {
+                                            "id":"edit-profile-modal-label",
+                                            "class_name":"modal-title"
+                                        },
+                                        "Edit Profile"
+                                        ),
+                                    html.button(
+                                        {
+                                            # Use data-bs-dismiss attribute to close the modal
+                                            "type":"button",
+                                            "data-bs-dismiss":"modal",
+                                            "aria-label":"Close",
+                                            'class':'close'
+                                        },
+                                        html.span(
+                                            {
+                                                "aria-hidden":"true"},
+                                            "×"
+                                        )
+                                    )
+                                ),
+                                # Add a modal body with input fields for editing profile
+                                html.div(
+                                    {
+                                        "class_name":'modal-body'},
+                                    # Use form-group and form-control classes for styling
+                                    html.div(
+                                        {
+                                            "class_name":'form-group'},
+                                        html.label({
+                                            "for":'fname-input'
+                                            },
+                                                   f"First Name: {user['fname']}"),
+                                        # Use value attribute to pre-fill the input with current value
+                                        html.input(
+                                            {
+                                            # Use id attribute to link the label and the input
+                                            # Use name attribute to identify the input in the backend
+                                            # Use type attribute to specify the input type
+                                            # Use placeholder attribute to show a hint
+                                            # Use required attribute to make the input mandatory
+                                            # You can add more attributes as needed
+                                            # Repeat this for other input fields
+                                            'id':'fname-input',
+                                            'name':'fname',
+                                            'type':'text',
+                                            'value':user['fname'],
+                                            'placeholder': f'Enter your first name here',
+                                            'required':"true",
+                                            'class':'form-control'
+                                            }
+                                        )
+                                    ),
+                                    html.div(
+                                        {
+                                            'class': 'form-group'
+                                        },
+                                        html.label(
+                                            {
+                                                'for': 'other_names-input'
+                                            },
+                                            f'Other Names: {user["other_names"]}'
+                                        ),
+                                        html.input({
+                                            'id': 'other_names-input',
+                                            'name': 'other_names',
+                                            'type': 'text',
+                                            'value': user['other_names'],
+                                            'placeholder': f'Enter your other names here',
+                                            'required': "false",
+                                            'class': 'form-control'
+                                        })
+                                        ),
+                                    html.div(
+                                        {
+                                            'class': 'form-group'},
+                                        html.label(
+                                            {
+                                                'for': 'lname-input'
+                                            },
+                                            f'Last Name: {user["lname"]}'
+                                        ),
+                                        html.input({
+                                            'id': 'lname-input',
+                                            'name': 'lname',
+                                            'type': 'text',
+                                            'value': user['lname'],
+                                            'placeholder': f'Enter your last name here',
+                                            'required': "true",
+                                            'class': 'form-control'
+                                        })
+                                    ),
+                                    html.div({
+                                        'class': 'form-group'
+                                        },
+                                            html.label(
+                                                {
+                                                    'for': 'birth_date-input'
+                                                },
+                                                f'Birth Date: {user["birth_date"]}'),
+                                            html.input({
+                                                'id': 'birth_date-input',
+                                                'name': 'birth_date',
+                                                'type': 'date',
+                                                'value': user['birth_date'],
+                                                'placeholder': f'Enter your birth date here',
+                                                'required': "false",
+                                                'class': 'form-control'
+                                            })
+                                            ),
+                                    html.div(
+                                        {
+                                            'class': 'form-group'
+                                        },
+                                        html.label(
+                                            {
+                                                'for': 'gender-input'
+                                            },
+                                            f'Gender: {user["gender"]}'
+                                        ),
+                                        # Use select and option elements for a dropdown list
+                                        html.select({
+                                            "id": "gender-input",
+                                            "name": "gender",
+                                            "class": "form-control"
+                                        },
+                                # Use selected attribute to pre-select the current value
+                                # Repeat this for other options
+                                html.option({
+                                    "value": "Male",
+                                    "selected": user['gender'] == "Male"
+                                }, "Male"),
+                                html.option({
+                                    "value": "Female",
+                                    "selected": user['gender'] == "Female"
+                                }, "Female"),
+                                html.option({
+                                    "value": "Non-Binary",
+                                    "selected": user['gender'] == "Non-Binary"
+                                }, "Non-Binary"),
+                                html.option({
+                                    "value": "Prefer Not To Say",
+                                    "selected": user['gender'] == 
+                                        "Prefer Not To Say"
+                                }, "Prefer Not To Say")
+                            )
+                        )
+                    ),
+                                # Add a modal footer with a submit button
+                                html.div(
+                                    {
+                                        "class_name":'modal-footer'
+                                    },
+                                    # Use type="submit" attribute to submit the form
+                                    # Use form attribute to link the button to the form
+                                    # Use data-bs-dismiss attribute to close the modal after submitting
+                                    html.button(
+                                        {
+                                            'type':'submit',
+                                            'form':'edit-profile-form',
+                                            'data-bs-dismiss':'modal',
+                                            'class':'btn btn-primary'
+                                        },
+                                        "Save Changes"
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                    html.button(
+                        {
+                            # Use data-bs-toggle and data-bs-target attributes to link the button to the modal
+                            "href": "#",
+                            "data-bs-toggle": "modal",
+                            "data-bs-target": "#change-image-modal",
+                            "class_name": "btn btn-secondary btn-block",
+                            "type": "button"
+                        },
+                        "Change Image"
+                        ),
+                    # Create a modal for changing image
+                    html.div(
+                        {
+                            "id": "change-image-modal",
+                            "class_name":"modal fade",
+                            # Use tabindex, role and aria attributes for accessibility
+                            "tabindex":"-1",
+                            "role":"dialog",
+                            "aria-labelledby":"change-image-modal-label",
+                            "aria-hidden":"true"
+                        },
+                        html.div(
+                            {
+                                "class_name": "modal-dialog modal-dialog-centered",
+                                "role": "document"
+                            },
+                            html.div(
+                                {
+                                    "class_name":"modal-content"
+                                },
+                                # Add a modal header with a title and a close button
+                                html.div(
+                                    {
+                                        "class_name":"modal-header"},
+                                    html.h5(
+                                        {
+                                            "id":"change-image-modal-label",
+                                            "class_name":"modal-title"
+                                        },
+                                        "Change Image"
+                                    ),
+                                    html.button(
+                                        {
+                                            # Use data-bs-dismiss attribute to close the modal
+                                            "type":"button",
+                                            "data-bs-dismiss":"modal",
+                                            "aria-label":"Close",
+                                            'class':'close'
+                                        },
+                                        html.span(
+                                            {
+                                                "aria-hidden":"true"},
+                                            "×"
+                                        )
+                                    )
+                                ),
+                                # Add a modal body with an input field for changing image
+                                html.div(
+                                    {
+                                        "class_name":'modal-body'
+                                    },
+                                    # Use form-group and form-control classes for styling
+                                    html.div(
+                                        {
+                                            "class_name":'form-group'
+                                        },
+                                        html.label(
+                                            {
+                                                "for":'image-input'
+                                            },
+                                            f"Current Image: {user['display_image']}"
+                                        ),
+                                        # Use type="file" attribute to allow uploading files
+                                        html.input({
+                                            # Use id attribute to link the label and the input
+                                            # Use name attribute to identify the input in the backend
+                                            # Use accept attribute to specify the file types allowed
+                                            # Use required attribute to make the input mandatory
+                                            # You can add more attributes as needed
+                                            'id':'image-input',
+                                            'name':'image',
+                                            'type':'file',
+                                            'accept':'image/*',
+                                            'required':"true",
+                                            'class':'form-control'
+                                        })
+                                    )
+                                ),
+                                # Add a modal footer with a submit button
+                                html.div(
+                                    {
+                                        "class_name":'modal-footer'
+                                    },
+                                    # Use type="submit" attribute to submit the form
+                                    # Use form attribute to link the button to the form
+                                    # Use data-bs-dismiss attribute to close the modal after submitting
+                                    html.button(
+                                        {
+                                            'type':'submit',
+                                            'form':'change-image-form',
+                                            'data-bs-dismiss':'modal',
+                                            'class':'btn btn-primary'
+                                        },
+                                        "Change Image"
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    html.button(
+                        {
+                            # Use data-bs-toggle and data-bs-target attributes to link the button to the modal
+                            "href": "#",
+                            "data-bs-toggle": "modal",
+                            "data-bs-target": "#change-password-modal",
+                            "class_name": "btn btn-danger btn-block", 
+                            "type": "button",
+                        },
+                        "Change Password"
+                    ),
+                    # Create a modal for changing password
+                    html.div(
+                        {
+                            "id": "change-password-modal",
+                            "class_name":"modal fade",
+                            # Use tabindex, role and aria attributes for accessibility
+                            "tabindex":"-1",
+                            "role":"dialog",
+                            "aria-labelledby":"change-password-modal-label",
+                            "aria-hidden":"true"
+                        },
+                        html.div(
+                            {
+                                "class_name": "modal-dialog modal-dialog-centered",
+                                "role": "document"
+                            },
+                            html.div(
+                                {
+                                    "class_name":"modal-content"
+                                },
+                                # Add a modal header with a title and a close button
+                                html.div(
+                                    {
+                                        "class_name":"modal-header"},
+                                    html.h5(
+                                        {
+                                            "id":"change-password-modal-label",
+                                            "class_name":"modal-title"
+                                        },
+                                        "Change Password"
+                                    ),
+                                    html.button(
+                                        {
+                                            # Use data-bs-dismiss attribute to close the modal
+                                            "type":"button",
+                                            "data-bs-dismiss":"modal",
+                                            "aria-label":"Close",
+                                            'class':'close'
+                                        },
+                                        html.span(
+                                            {
+                                                "aria-hidden":"true"
+                                            },
+                                            "×"
+                                        )
+                                    )
+                                ),
+                                # Add a modal body with input fields for changing password
+                                html.div(
+                                    {
+                                        "class_name":'modal-body'
+                                    },
+                                    # Use form-group and form-control classes for styling
+                                    html.div(
+                                        {
+                                            "class_name":'form-group'
+                                        },
+                                        html.label(
+                                            {
+                                                "for":'old-password-input'
+                                            },
+                                            f"Old Password:"),
+                                        # Use type="password" attribute to hide the input value
+                                        html.input({
+                                            # Use id attribute to link the label and the input
+                                            # Use name attribute to identify the input in the backend
+                                            # Use placeholder attribute to show a hint
+                                            # Use required attribute to make the input mandatory
+                                            # You can add more attributes as needed
+                                            # Repeat this for other input fields
+                                            'id':'old-password-input',
+                                            'name':'old_password',
+                                            'type':'password',
+                                            'placeholder':f'Enter your old password here',
+                                            'required':"true",
+                                            'class':'form-control'
+                                        })
+                                        ),
+                                    html.div(
+                                        {
+                                            'class': 'form-group'
+                                        },
+                                        html.label({
+                                            'for': 'new-password-input'
+                                        },
+                                                   f'New Password:'),
+                                        html.input({
+                                            'id': 'new-password-input',
+                                            'name': 'new_password',
+                                            'type': 'password',
+                                            'placeholder': f'Enter your new password here',
+                                            'required': "true",
+                                            'class': 'form-control'
+                                        })
+                                        ),
+                                    html.div(
+                                        {
+                                            'class': 'form-group'
+                                        },
+                                        html.label(
+                                            {
+                                                'for': 'confirm-password-input'
+                                            },
+                                            f'Confirm Password:'),
+                                        html.input({
+                                            'id': 'confirm-password-input',
+                                            'name': 'confirm_password',
+                                            'type': 'password',
+                                            'placeholder': f'Enter your new password again','required': "true",
+                                            'class': 'form-control'
+                                        })
+                                    )
+                                ),
+                                # Add a modal footer with a submit button
+                                html.div(
+                                    {
+                                        "class_name":
+                                            'modal-footer'
+                                    },
+                                    # Use type="submit" attribute to submit the form
+                                    # Use form attribute to link the button to the form
+                                    # Use data-bs-dismiss attribute to close the modal after submitting
+                                    html.button(
+                                        {
+                                            'type':'submit',
+                                            'form':'change-password-form',
+                                            'data-bs-dismiss':'modal',
+                                            'class':'btn btn-primary'
+                                        },
+                                        "Change Password"
+                                    )
+                                )
+                            )
                         )
                     )
                 )
+            )
             ),
             html.div(
                 {"class_name": "col-md-6"},
@@ -279,3 +740,4 @@ def UserProfile(userUUID:str):
                 )
             )
         )
+    
