@@ -64,7 +64,7 @@
                               {% if user.is_housekeeper %}
                               <li><hr class=""></li>
                               <li class="nav-item">
-                                  <a class="dropdown-item" href="{% url 'edit_family' %}">Edit your family</a>
+                                  <a class="dropdown-item" href="{% url 'add_family_member' %}">Add a member to the {{request.user.family.name}}'s</a>
                               </li>    
                               {% endif %}       
                               <li><hr class=""></li>

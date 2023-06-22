@@ -1,12 +1,12 @@
-2023-06-22 16:37:09,274 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
-2023-06-22 16:37:09,714 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
-2023-06-22 16:37:09,714 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-22 16:37:09,714 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-22 16:37:09,714 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
-2023-06-22 16:37:09,714 DEBUG ReactPy has registered component frontend.src.components.register.newMember
-2023-06-22 16:37:09,714 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-22 16:37:09,714 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
-2023-06-22 16:37:10,869 ERROR ReactPy websocket authentication has failed!
+2023-06-22 20:07:06,548 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-22 20:07:06,832 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-22 20:07:06,832 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-22 20:07:06,832 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-22 20:07:06,832 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-22 20:07:06,832 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-22 20:07:06,832 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
+2023-06-22 20:07:06,836 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
+2023-06-22 20:07:06,900 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -30,10 +30,8 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:37:10,973 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
-2023-06-22 16:37:13,183 WARNING Not Found: /static/default-user.png
-2023-06-22 16:37:15,810 WARNING Not Found: /static/default-user.png
-2023-06-22 16:37:58,601 ERROR ReactPy websocket authentication has failed!
+2023-06-22 20:07:06,931 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-22 20:14:18,784 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -57,9 +55,7 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:38:00,834 WARNING Not Found: /static/default-user.png
-2023-06-22 16:40:58,852 WARNING Not Found: /static/default-user.png
-2023-06-22 16:43:44,526 ERROR Failed to render UserProfile(1afba2a09a0, userUUID=UUID('b81ae2bc-1070-11ee-9a22-00155d6d7580'))
+2023-06-22 20:17:44,242 ERROR Failed to render UserProfile(1d49c28e8e0, userUUID=UUID('b81ae2bc-1070-11ee-9a22-00155d6d7580'))
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy\core\layout.py", line 150, in _render_component
     raw_model = component.render()
@@ -72,7 +68,7 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\paginator.py", line 186, in __getitem__
     return self.object_list[index]
 IndexError: list index out of range
-2023-06-22 16:43:55,704 ERROR ReactPy websocket authentication has failed!
+2023-06-22 20:19:17,608 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -96,210 +92,3 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:43:57,964 WARNING Not Found: /static/default-user.png
-2023-06-22 16:46:40,771 ERROR ReactPy websocket authentication has failed!
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
-    backend = backend or user.backend
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
-    return func(_wrapped, *args)
-AttributeError: 'Member' object has no attribute 'backend'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
-    await login(self.scope, user)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
-    return super().thread_handler(loop, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
-    raise ValueError(
-ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:46:42,994 WARNING Not Found: /static/default-user.png
-2023-06-22 16:46:44,729 WARNING Not Found: /static/default-user.png
-2023-06-22 16:55:40,253 ERROR ReactPy websocket authentication has failed!
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
-    backend = backend or user.backend
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
-    return func(_wrapped, *args)
-AttributeError: 'Member' object has no attribute 'backend'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
-    await login(self.scope, user)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
-    return super().thread_handler(loop, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
-    raise ValueError(
-ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:57:16,120 ERROR ReactPy websocket authentication has failed!
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
-    backend = backend or user.backend
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
-    return func(_wrapped, *args)
-AttributeError: 'Member' object has no attribute 'backend'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
-    await login(self.scope, user)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
-    return super().thread_handler(loop, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
-    raise ValueError(
-ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:57:39,305 ERROR ReactPy websocket authentication has failed!
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
-    backend = backend or user.backend
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
-    return func(_wrapped, *args)
-AttributeError: 'Member' object has no attribute 'backend'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
-    await login(self.scope, user)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
-    return super().thread_handler(loop, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
-    raise ValueError(
-ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 16:58:17,495 ERROR Internal Server Error: /edit_family
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
-    list_ = super().__getitem__(key)
-KeyError: 'spouse'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
-    raise exc_info[1]
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
-    response = await get_response(request)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
-    response = await wrapped_callback(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\backend\views.py", line 136, in edit_family
-    spouse = request.POST['spouse'] or None
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
-    raise MultiValueDictKeyError(key)
-django.utils.datastructures.MultiValueDictKeyError: 'spouse'
-2023-06-22 17:03:14,868 ERROR Internal Server Error: /edit_family
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
-    list_ = super().__getitem__(key)
-KeyError: 'spouse'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
-    raise exc_info[1]
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
-    response = await get_response(request)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
-    response = await wrapped_callback(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\backend\views.py", line 136, in edit_family
-    spouse = request.POST.get('spouse')
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
-    raise MultiValueDictKeyError(key)
-django.utils.datastructures.MultiValueDictKeyError: 'spouse'
-2023-06-22 17:03:19,071 ERROR ReactPy websocket authentication has failed!
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
-    backend = backend or user.backend
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
-    return func(_wrapped, *args)
-AttributeError: 'Member' object has no attribute 'backend'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
-    await login(self.scope, user)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
-    return super().thread_handler(loop, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
-    raise ValueError(
-ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-22 17:04:18,704 ERROR Internal Server Error: /edit_family
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
-    list_ = super().__getitem__(key)
-KeyError: 'spouse'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
-    raise exc_info[1]
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
-    response = await get_response(request)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
-    response = await wrapped_callback(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
-    ret: _R = await loop.run_in_executor(
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\current_thread_executor.py", line 40, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
-    return func(*args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\backend\views.py", line 136, in edit_family
-    spouse = request.POST.get('spouse')
-  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
-    raise MultiValueDictKeyError(key)
-django.utils.datastructures.MultiValueDictKeyError: 'spouse'

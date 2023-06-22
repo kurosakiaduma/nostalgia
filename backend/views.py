@@ -121,7 +121,7 @@ def logout_user(request):
     return redirect('login_user')
 
 @login_required
-def edit_family(request):
+def add_family_member(request):
     print(f"THE FAMILY IS {request.user.family}")
     csrftoken = get_token(request)
     if request.method == "POST":
@@ -178,7 +178,7 @@ def edit_family(request):
         if image:
             MemberImage.objects.create(member=member, image=image)
 
-    return render(request, "edit_family.html", {"token": csrftoken})
+    return render(request, "add_family_member.html", {"token": csrftoken})
 
 def get_fathers(request):
     family_uuid = request.GET.get('familyUUID')
