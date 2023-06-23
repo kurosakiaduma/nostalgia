@@ -1,12 +1,12 @@
-2023-06-23 22:28:01,140 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-23 22:28:01,375 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-23 22:28:01,375 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
-2023-06-23 22:28:01,379 DEBUG ReactPy has registered component frontend.src.components.register.newMember
-2023-06-23 22:28:01,379 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-23 22:28:01,379 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
-2023-06-23 22:28:01,379 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
-2023-06-23 22:28:01,381 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
-2023-06-23 22:28:01,441 ERROR ReactPy websocket authentication has failed!
+2023-06-23 23:08:39,172 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-23 23:08:39,382 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-23 23:08:39,382 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-23 23:08:39,383 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-23 23:08:39,383 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
+2023-06-23 23:08:39,385 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
+2023-06-23 23:08:39,385 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-23 23:08:39,385 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-23 23:08:39,444 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -30,4 +30,5 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-23 22:28:01,471 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-23 23:08:39,471 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-23 23:08:41,922 WARNING Not Found: /media/static/default-user.png

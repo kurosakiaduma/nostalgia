@@ -83,18 +83,17 @@ def UserProfile(userUUID:str):
     @event(prevent_default=True)
     async def handleImageChanges(props: dict):
         setIsLoading(True)
-        print(f'\n{props} HERE WE GO\n')
         # Get the image file from the props parameter
-        setImage(((props.get("currentTarget")).get("elements")[0]).get("files")[0])
+        image = ((props.get("currentTarget")).get("elements")[0]).get("files")[0]
+        setImage(image)
         
         async with aiohttp.ClientSession() as session:
             # Update member image
             # Use aiohttp.MultipartWriter to create a multipart/form-data object
-            # Add the image file and the alt text as parts of the object
-            # Use session.post with data=mp object to send the request
+            # Use aiohttp.MultipartWriter.append_formdata to add the image file and alt text as parts of the object
             mp = aiohttp.MultipartWriter()
-            mp.append(image, {'name': 'image'})
-            mp.append_json({'alt': 'display-image'}, {'name': 'alt'})
+            mp.append_form('image', image)
+            mp.append_form('alt', 'display-image')
             update_image_response = await session.post(f'http://localhost:8000/api/update-member-image?userUUID={userUUID}', data=mp)
 
             # Check the response status and update the state variables
@@ -105,7 +104,6 @@ def UserProfile(userUUID:str):
             else:
                 setImageResultMessage(f'An error occured while updating your image 😓 \nTry again 🥺')
                 setIsLoading(False)
-
         
     if not user:
         return LoadingIndicator()

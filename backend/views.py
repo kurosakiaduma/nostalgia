@@ -215,7 +215,7 @@ def get_user(request):
         ).first()
         # Set the display image URL
         user['display_image'] = '/static/default-user.png'  # Default image
-        display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='Display image').first()
+        display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='display-image').first()
         if display_image:
             user['display_image'] = display_image.image.url
         # Set the family name
@@ -315,7 +315,7 @@ def update_member_details(request):
 def update_member_image(request):
     if request.method == "POST":
         # Use request.GET instead of request.POST to get the value of userUUID
-        print(f'{request}')
+        print(f'\nTHE POST => {request} \n FILES => {request.POST} \n => {request.FILES}')
         memberUUID = request.GET.get('userUUID')
         image = request.FILES.get('image')
         alt = 'display-image'

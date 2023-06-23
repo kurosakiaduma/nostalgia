@@ -169,7 +169,7 @@ STATICFILES_DIRS = [Path.joinpath(BASE_DIR, "frontend", "static")]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # User-uploaded image directory and url
-MEDIA_ROOT = Path.joinpath(BASE_DIR, "backend/")
+MEDIA_ROOT = Path.joinpath(BASE_DIR, "backend/uploads")
 MEDIA_URL = "/media/"
 
 # Default primary key field type
