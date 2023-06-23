@@ -1,12 +1,12 @@
-2023-06-23 00:46:22,682 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
-2023-06-23 00:46:22,892 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
-2023-06-23 00:46:22,892 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
-2023-06-23 00:46:22,897 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
-2023-06-23 00:46:22,897 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
-2023-06-23 00:46:22,897 DEBUG ReactPy has registered component frontend.src.components.register.newMember
-2023-06-23 00:46:22,897 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
-2023-06-23 00:46:22,902 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
-2023-06-23 00:46:22,958 ERROR ReactPy websocket authentication has failed!
+2023-06-23 20:21:58,198 INFO ReactPy preloader has detected component frontend.src.components.login.loginForm
+2023-06-23 20:21:58,451 DEBUG ReactPy has registered component frontend.src.components.login.loginForm
+2023-06-23 20:21:58,451 INFO ReactPy preloader has detected component frontend.src.components.profile.UserProfile
+2023-06-23 20:21:58,461 DEBUG ReactPy has registered component frontend.src.components.profile.UserProfile
+2023-06-23 20:21:58,461 INFO ReactPy preloader has detected component frontend.src.components.register.newMember
+2023-06-23 20:21:58,463 DEBUG ReactPy has registered component frontend.src.components.register.newMember
+2023-06-23 20:21:58,463 INFO ReactPy preloader has detected component frontend.src.components.register.registerFamily
+2023-06-23 20:21:58,463 DEBUG ReactPy has registered component frontend.src.components.register.registerFamily
+2023-06-23 20:21:58,526 ERROR ReactPy websocket authentication has failed!
 Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
     backend = backend or user.backend
@@ -30,4 +30,28 @@ Traceback (most recent call last):
   File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
     raise ValueError(
 ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
-2023-06-23 00:46:22,990 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-23 20:21:58,571 WARNING ReactPy has detected component sessions in the database, but no timestamp was found in cache. This may indicate that the cache has been cleared.
+2023-06-23 20:24:25,450 ERROR ReactPy websocket authentication has failed!
+Traceback (most recent call last):
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 95, in login
+    backend = backend or user.backend
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\django\utils\functional.py", line 268, in inner
+    return func(_wrapped, *args)
+AttributeError: 'Member' object has no attribute 'backend'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\reactpy_django\websocket\consumer.py", line 37, in connect
+    await login(self.scope, user)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Users\Tevin\anaconda3\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\db.py", line 13, in thread_handler
+    return super().thread_handler(loop, *args, **kwargs)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "C:\Users\Tevin\Documents\life_pieces\personal\nostalgia\nostalgia\lib\site-packages\channels\auth.py", line 101, in login
+    raise ValueError(
+ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.

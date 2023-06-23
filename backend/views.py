@@ -288,3 +288,26 @@ def get_stories(request):
     
     stories = Story.objects.filter(author__uuid=userUUID).values('title', 'content')
     return JsonResponse(list(stories),safe=False)
+
+
+@csrf_exempt
+def update_member_details(request):
+    import json
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        memberUUID = data.get('userUUID')
+        otherNames = data.get('otherNames')
+        birthDate = data.get('birthDate')
+        gender = data.get('gender')
+
+        # Update member details in the database
+        member = Member.objects.get(uuid=memberUUID)
+        if otherNames:
+            member.other_names = otherNames
+        if birthDate:
+            member.birth_date = birthDate
+        if gender:
+            member.gender = gender
+        member.save()
+
+        return JsonResponse({'message': 'Member details updated successfully.'})

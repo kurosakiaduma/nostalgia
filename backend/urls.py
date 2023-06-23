@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/get-images', get_images, name='get-images'),
     path('api/get-family', get_family, name='get-family'),
     path('api/get-stories', get_stories, name='get-stories'),
+    path('api/update-member-details', update_member_details, name='update-member-details'),
 
     # Page routes
     path("register", register_user, name="register_user"),
