@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    #APIs
+    # APIs
     path('api/check-email', check_email, name='check-email'),
     path('api/get-fathers', get_fathers, name='get-fathers'),
     path('api/get-mothers', get_mothers, name='get-mothers'),
@@ -12,7 +12,7 @@ urlpatterns = [
     path('api/get-family', get_family, name='get-family'),
     path('api/get-stories', get_stories, name='get-stories'),
     path('api/update-member-details', update_member_details, name='update-member-details'),
-
+    path('api/update-member-image', update_member_image, name='update-member-image'),
     # Page routes
     path("register", register_user, name="register_user"),
     path("login", login_user, name="login_user"),

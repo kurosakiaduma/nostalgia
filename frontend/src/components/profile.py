@@ -17,7 +17,9 @@ def UserProfile(userUUID:str):
     [activeTab, setActiveTab] = use_state('images')
     [page, setPage] = use_state(1)
     location = use_location()
-    
+    [image, setImage] = use_state('')
+    [imageResultMessage, setImageResultMessage] = use_state('')
+
     
     async def fetch_user():
         async with aiohttp.ClientSession() as session:
@@ -77,6 +79,33 @@ def UserProfile(userUUID:str):
             else:
                 setResultMessage(f'An error occured while updating your profile 😓 \nTry again 🥺')
                 setIsLoading(False)
+    
+    @event(prevent_default=True)
+    async def handleImageChanges(props: dict):
+        setIsLoading(True)
+        print(f'\n{props} HERE WE GO\n')
+        # Get the image file from the props parameter
+        setImage(((props.get("currentTarget")).get("elements")[0]).get("files")[0])
+        
+        async with aiohttp.ClientSession() as session:
+            # Update member image
+            # Use aiohttp.MultipartWriter to create a multipart/form-data object
+            # Add the image file and the alt text as parts of the object
+            # Use session.post with data=mp object to send the request
+            mp = aiohttp.MultipartWriter()
+            mp.append(image, {'name': 'image'})
+            mp.append_json({'alt': 'display-image'}, {'name': 'alt'})
+            update_image_response = await session.post(f'http://localhost:8000/api/update-member-image?userUUID={userUUID}', data=mp)
+
+            # Check the response status and update the state variables
+            if update_image_response.status == 200:
+                update_image_data = await update_image_response.json()
+                setImageResultMessage(update_image_data['message'])
+                setIsLoading(False)
+            else:
+                setImageResultMessage(f'An error occured while updating your image 😓 \nTry again 🥺')
+                setIsLoading(False)
+
         
     if not user:
         return LoadingIndicator()
@@ -385,7 +414,6 @@ def UserProfile(userUUID:str):
                                             'id': 'edit-profile-form',
                                             'onSubmit': handleSaveChanges
                                         },
-                                # Your form code here
                                 html.div(
                                     {'class': 'form-group'},
                                     html.label(
@@ -522,50 +550,56 @@ def UserProfile(userUUID:str):
                             )
                         ),
                     # Add a modal body with an input field for changing image
-                    html.div({
-                        "class_name":'modal-body'
-                        },
-                            # Use form-group and form-control classes for styling
-                            html.div({
-                                "class_name":'form-group'
-                            },
-                                    html.label({
-                                        "for":'image-input'
-                                    },
-                                               f"Upload new profile image"
-                                    ),
-                                    # Use type="file" attribute to allow uploading files
-                                    html.input({
-                                        # Use id attribute to link the label and the input
-                                        # Use name attribute to identify the input in the backend
-                                        # Use accept attribute to specify the file types allowed
-                                        # Use required attribute to make the input mandatory
-                                        # You can add more attributes as needed
-                                        'id':'image-input',
-                                        'name':'image',
-                                        'type':'file',
-                                        'accept':'image/*',
-                                        'required':"true",
-                                        'class':'form-control'
-                                        })
-                                    )
-                            ),
-                    # Add a modal footer with a submit button
-                    html.div({
-                        "class_name":'modal-footer'
-                        },
-                            # Use type="submit" attribute to submit the form
-                            # Use form attribute to link the button to the form
-                            # Use data-bs-dismiss attribute to close the modal after submitting
-                            html.button({
-                                'type':'submit',
-                                'form':'change-image-form',
-                                'data-bs-dismiss':'modal',
-                                'class':'btn btn-primary'
+                    html.form({
+                        "method": "POST",
+                        'id': 'edit-image-form',
+                        'onSubmit': handleImageChanges,
+                    },
+                              html.div({
+                                  "class_name":'modal-body'
+                                },
+                                        # Use form-group and form-control classes for styling
+                                        html.div({
+                                            "class_name":'form-group'
+                                        },
+                                                html.label({
+                                                    "for":'image-input'
+                                                },
+                                                           f"Upload new profile image"
+                                                ),
+                                                # Use type="file" attribute to allow uploading files
+                                                html.input({
+                                                    # Use id attribute to link the label and the input
+                                                    # Use name attribute to identify the input in the backend
+                                                    # Use accept attribute to specify the file types allowed
+                                                    # Use required attribute to make the input mandatory
+                                                    # You can add more attributes as needed
+                                                    'id':'image-input',
+                                                    'name':'image',
+                                                    'type':'file',
+                                                    'accept':'image/*',
+                                                    'required':"true",
+                                                    'class':'form-control'
+                                                })
+                                            )
+                                        ),
+                              # Add a modal footer with a submit button
+                              html.div({
+                                  "class_name":'modal-footer'
+                                },
+                                # Use type="submit" attribute to submit the form
+                                # Use form attribute to link the button to the form
+                                # Use data-bs-dismiss attribute to close the modal after submitting
+                                html.button({
+                                    'type':'submit',
+                                    'form':'edit-image-form',
+                                    'data-bs-dismiss':'modal',
+                                    'class':'btn btn-primary'
                             },
                                         "Change Image"
                             )
                         )
+                    )
                 )
             )
         ),

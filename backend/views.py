@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from datetime import datetime as dt, date
 from dateutil.relativedelta import relativedelta
-
+from json import loads
 
 def index(request):
     print(f'THE USER IS {request.user}')
@@ -292,9 +292,8 @@ def get_stories(request):
 
 @csrf_exempt
 def update_member_details(request):
-    import json
     if request.method == 'POST':
-        data = json.loads(request.body)
+        data = loads(request.body)
         memberUUID = data.get('userUUID')
         otherNames = data.get('otherNames')
         birthDate = data.get('birthDate')
@@ -311,3 +310,18 @@ def update_member_details(request):
         member.save()
 
         return JsonResponse({'message': 'Member details updated successfully.'})
+
+@csrf_exempt
+def update_member_image(request):
+    if request.method == "POST":
+        # Use request.GET instead of request.POST to get the value of userUUID
+        print(f'{request}')
+        memberUUID = request.GET.get('userUUID')
+        image = request.FILES.get('image')
+        alt = 'display-image'
+        try:
+            member = Member.objects.get(uuid=memberUUID)
+            member_image, created = MemberImage.objects.update_or_create(member=member, defaults={'image': image, 'alt': alt})
+            return JsonResponse({'message': 'Member image updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'message': f'An error occured while updating member image: {e}'}, status=400)
