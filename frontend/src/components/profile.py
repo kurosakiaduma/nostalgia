@@ -84,15 +84,15 @@ def UserProfile(userUUID:str):
     async def handleImageChanges(props: dict):
         setIsLoading(True)
         # Get the image file from the props parameter
-        image = ((props.get("currentTarget")).get("elements")[0]).get("files")[0]
-        setImage(image)
-        
+        image_file = props['currentTarget']['elements'][0]['files'][0]
+        setImage(image_file)
+        print(f'\n\nTHIS IS THE IMAGE=> {image_file}')
         async with aiohttp.ClientSession() as session:
             # Update member image
             # Use aiohttp.MultipartWriter to create a multipart/form-data object
             # Use aiohttp.MultipartWriter.append_formdata to add the image file and alt text as parts of the object
             mp = aiohttp.MultipartWriter()
-            mp.append_form('image', image)
+            mp.append_form('image', image_file)
             mp.append_form('alt', 'display-image')
             update_image_response = await session.post(f'http://localhost:8000/api/update-member-image?userUUID={userUUID}', data=mp)
 
@@ -552,6 +552,7 @@ def UserProfile(userUUID:str):
                         "method": "POST",
                         'id': 'edit-image-form',
                         'onSubmit': handleImageChanges,
+                        'enctype': 'multipart/form-data',
                     },
                               html.div({
                                   "class_name":'modal-body'
