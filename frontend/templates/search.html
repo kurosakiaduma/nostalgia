@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% load static reactpy %}
+{% block head%}
+<head>
+    <title>Nostalgia | Search </title>
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css">
+</head>
+{% endblock %}
+{% block body %}
+{% component 'frontend.src.components.search.SearchBar' userFamily=request.user.family.name %}
+{% endblock body %}

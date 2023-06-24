@@ -15,10 +15,12 @@ urlpatterns = [
     path('api/get-stories', get_stories, name='get-stories'),
     path('api/update-member-details', update_member_details, name='update-member-details'),
     path('api/update-member-image', update_member_image, name='update-member-image'),
+    path('api/search', search, name='search'),
     # Page routes
     path("register", register_user, name="register_user"),
     path("login", login_user, name="login_user"),
     path("logout", logout_user, name="logout_user"),
     path("user_profile", user_profile, name="user_profile"),
     path("add_family_member", add_family_member, name="add_family_member"),
+    path("edit_family", edit_family, name="edit_family"),
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

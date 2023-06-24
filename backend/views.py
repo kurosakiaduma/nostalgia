@@ -1,14 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from backend.models import Family, Member, MemberImage, Story
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.db.models import Case, When, Value, CharField, F, Q
 from django.shortcuts import render,redirect
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime as dt, date
 from dateutil.relativedelta import relativedelta
 from json import loads
@@ -325,3 +324,20 @@ def update_member_image(request):
             return JsonResponse({'message': 'Member image updated successfully.'})
         except Exception as e:
             return JsonResponse({'message': f'An error occured while updating member image: {e}'}, status=400)
+@login_required
+def edit_family(request):
+    return render(request, "search.html")
+
+def search(request):
+    userFamily = request.GET.get('userFamily')
+    query = request.GET.get('query')
+    results = Member.objects.filter(Q(fname__icontains=query) | Q(other_names__icontains=query) | Q(lname__icontains=query), family__name=userFamily)
+    data = results.annotate(
+        display_image=Case(
+            When(images__alt='display-image', then='images__image'),
+            default=Value('/static/default-user.png'),
+            output_field=CharField()
+        ),
+        family_name=F('family__name')
+    ).values('id', 'fname', 'lname', 'other_names', 'gender', 'birth_date', 'family_name', 'display_image')
+    return JsonResponse(list(data), safe=False)
