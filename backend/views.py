@@ -214,8 +214,7 @@ def get_user(request):
         ).first()
         # Set the display image URL
         user['display_image'] = '/static/default-user.png'  # Default image
-        display_image = MemberImage.objects.filter(member__uuid=user_uuid, alt='display-image').first()
-        if display_image:
+        if display_image := MemberImage.objects.filter(member__uuid=user_uuid, alt='display-image').first():
             user['display_image'] = display_image.image.url
         # Set the family name
         family_name = Family.objects.filter(member__uuid=user_uuid).values_list('name', flat=True).first()
@@ -259,8 +258,7 @@ def get_family(request):
         # Set the display image URL for each family member
         for member in spouse_and_children + list(parents) + list(siblings) + list(grandchildren):
             member['display_image'] = '/static/default-user.png'  # Default image
-            display_image = MemberImage.objects.filter(member__uuid=member['uuid'], alt='Display image').first()
-            if display_image:
+            if display_image := MemberImage.objects.filter(member__uuid=member['uuid'], alt='Display image').first():
                 member['display_image'] = display_image.image.url
         
         # Set the relation attribute for each member in the spouse_and_children list

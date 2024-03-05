@@ -7,8 +7,7 @@ class EmailAuthBackend():
     def authenticate(self, request, username, password):
         try:
             user = Member.objects.get(email=username)
-            success = user.check_password(password)
-            if success:
+            if success := user.check_password(password):
                 logger.debug(f"User {username} authenticated successfully")
                 return user
             else:
